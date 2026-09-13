@@ -160,6 +160,8 @@ Fuentes:
 
 Tablas: `raw.crs04_cap200`, `raw.crs04_cap248` / `analisis.crs04_adolescentes`.
 
+QC de sí/no, missing y construcción de indicadores (solo mujeres, ponderado): [violencia_crs04_si_no_missing.md](violencia_crs04_si_no_missing.md).
+
 ### CAP200 — psicológica y física (casa y colegio)
 
 Mismo diseño que CRS03. El prefijo de estas preguntas también es `C3P` (`C3P201_*`, `C3P205_*`, `C3P223_*`, `C3P227_*`, etc.).
