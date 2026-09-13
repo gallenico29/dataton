@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="920" height="110" viewBox="0 0 920 110" role="img">
+<title>Prevalencia 12 meses ponderada</title>
+<rect width="920" height="110" fill="#fafaf9"/>
+<rect x="12.0" y="10" width="212.0" height="90" fill="#fff" stroke="#e7e5e4" rx="8"/>
+<text x="118.0" y="52" text-anchor="middle" fill="#1c1917" font-size="28" font-weight="700" font-family="Segoe UI, Helvetica, Arial, sans-serif">59.7%</text>
+<text x="118.0" y="80" text-anchor="middle" fill="#78716c" font-size="12" font-family="Segoe UI, Helvetica, Arial, sans-serif">Psicológica 12m (sí, ponderado)</text>
+<rect x="240.0" y="10" width="212.0" height="90" fill="#fff" stroke="#e7e5e4" rx="8"/>
+<text x="346.0" y="52" text-anchor="middle" fill="#1c1917" font-size="28" font-weight="700" font-family="Segoe UI, Helvetica, Arial, sans-serif">25.9%</text>
+<text x="346.0" y="80" text-anchor="middle" fill="#78716c" font-size="12" font-family="Segoe UI, Helvetica, Arial, sans-serif">Física 12m (sí, ponderado)</text>
+<rect x="468.0" y="10" width="212.0" height="90" fill="#fff" stroke="#e7e5e4" rx="8"/>
+<text x="574.0" y="52" text-anchor="middle" fill="#1c1917" font-size="28" font-weight="700" font-family="Segoe UI, Helvetica, Arial, sans-serif">23.0%</text>
+<text x="574.0" y="80" text-anchor="middle" fill="#78716c" font-size="12" font-family="Segoe UI, Helvetica, Arial, sans-serif">Sexual 12m (sí, ponderado)</text>
+<rect x="696.0" y="10" width="212.0" height="90" fill="#fff" stroke="#e7e5e4" rx="8"/>
+<text x="802.0" y="52" text-anchor="middle" fill="#1c1917" font-size="28" font-weight="700" font-family="Segoe UI, Helvetica, Arial, sans-serif">0</text>
+<text x="802.0" y="80" text-anchor="middle" fill="#78716c" font-size="12" font-family="Segoe UI, Helvetica, Arial, sans-serif">Missing en ítems madre</text>
+</svg>
