@@ -1,0 +1,9 @@
+*.duckdb
+*.duckdb.wal
+.venv/
+__pycache__/
+.ipynb_checkpoints/
+
+# Microdatos y PDF de INEI: CAP411.csv pesa 113 MB (límite de GitHub = 100 MB)
+datos_dev/
+data/
