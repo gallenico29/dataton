@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="920" height="276" viewBox="0 0 920 276" role="img">
+<title>Quién cuida la mayor parte del tiempo (C3P120 recode)</title>
+<rect width="920" height="276" fill="#fafaf9"/>
+<text x="200" y="18" fill="#78716c" font-size="12" font-family="Segoe UI, Helvetica, Arial, sans-serif">Quién cuida la mayor parte del tiempo (C3P120 recode)</text>
+<text x="192" y="51" text-anchor="end" fill="#1c1917" font-size="12" font-family="Segoe UI, Helvetica, Arial, sans-serif">madre</text>
+<rect x="200" y="32" width="664.0" height="28" fill="#0369a1" rx="3"/>
+<text x="870.0" y="51" fill="#1c1917" font-size="12" font-family="Segoe UI, Helvetica, Arial, sans-serif">70.1%</text>
+<text x="192" y="89" text-anchor="end" fill="#1c1917" font-size="12" font-family="Segoe UI, Helvetica, Arial, sans-serif">padre</text>
+<rect x="200" y="70" width="59.1" height="28" fill="#0369a1" rx="3"/>
+<text x="265.1" y="89" fill="#1c1917" font-size="12" font-family="Segoe UI, Helvetica, Arial, sans-serif">6.2%</text>
+<text x="192" y="127" text-anchor="end" fill="#1c1917" font-size="12" font-family="Segoe UI, Helvetica, Arial, sans-serif">abuelos</text>
+<rect x="200" y="108" width="75.5" height="28" fill="#0369a1" rx="3"/>
+<text x="281.5" y="127" fill="#1c1917" font-size="12" font-family="Segoe UI, Helvetica, Arial, sans-serif">8.0%</text>
+<text x="192" y="165" text-anchor="end" fill="#1c1917" font-size="12" font-family="Segoe UI, Helvetica, Arial, sans-serif">hermanos</text>
+<rect x="200" y="146" width="96.1" height="28" fill="#0369a1" rx="3"/>
+<text x="302.1" y="165" fill="#1c1917" font-size="12" font-family="Segoe UI, Helvetica, Arial, sans-serif">10.2%</text>
+<text x="192" y="203" text-anchor="end" fill="#1c1917" font-size="12" font-family="Segoe UI, Helvetica, Arial, sans-serif">otros</text>
+<rect x="200" y="184" width="49.9" height="28" fill="#0369a1" rx="3"/>
+<text x="255.9" y="203" fill="#1c1917" font-size="12" font-family="Segoe UI, Helvetica, Arial, sans-serif">5.3%</text>
+<text x="192" y="241" text-anchor="end" fill="#1c1917" font-size="12" font-family="Segoe UI, Helvetica, Arial, sans-serif">missing</text>
+<rect x="200" y="222" width="2.0" height="28" fill="#0369a1" rx="3"/>
+<text x="208.0" y="241" fill="#1c1917" font-size="12" font-family="Segoe UI, Helvetica, Arial, sans-serif">0.2%</text>
+</svg>

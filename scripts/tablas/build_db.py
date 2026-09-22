@@ -1,18 +1,21 @@
 """Carga los CSV de ENARES en DuckDB y arma tablas de análisis.
 
 Uso:
-    python scripts/build_db.py
+    python scripts/tablas/build_db.py
 """
 
 from __future__ import annotations
 
+import sys
 from pathlib import Path
 
 import duckdb
 
-ROOT = Path(__file__).resolve().parents[1]
-DATOS = ROOT / "datos_dev"
-DB_PATH = ROOT / "data" / "enares.duckdb"
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from rutas import CRUDOS, DB, asegurar_tablas
+
+DATOS = CRUDOS
+DB_PATH = DB
 
 CSV = {
     "raw.crs01_cap100": DATOS / "976-Modulo1941/976-Modulo1941/01_CRS01_CAP100.csv",
@@ -385,7 +388,7 @@ def report(con: duckdb.DuckDBPyConnection) -> None:
 
 
 def main() -> None:
-    DB_PATH.parent.mkdir(parents=True, exist_ok=True)
+    asegurar_tablas()
     if DB_PATH.exists():
         DB_PATH.unlink()
     wal = Path(str(DB_PATH) + ".wal")

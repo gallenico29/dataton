@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="920" height="314" viewBox="0 0 920 314" role="img">
+<title>Con quién vive (recode C3P105 / C3P115)</title>
+<rect width="920" height="314" fill="#fafaf9"/>
+<text x="200" y="18" fill="#78716c" font-size="12" font-family="Segoe UI, Helvetica, Arial, sans-serif">Con quién vive (recode C3P105 / C3P115)</text>
+<text x="192" y="51" text-anchor="end" fill="#1c1917" font-size="12" font-family="Segoe UI, Helvetica, Arial, sans-serif">ambos padres</text>
+<rect x="200" y="32" width="664.0" height="28" fill="#0369a1" rx="3"/>
+<text x="870.0" y="51" fill="#1c1917" font-size="12" font-family="Segoe UI, Helvetica, Arial, sans-serif">61.3%</text>
+<text x="192" y="89" text-anchor="end" fill="#1c1917" font-size="12" font-family="Segoe UI, Helvetica, Arial, sans-serif">solo madre</text>
+<rect x="200" y="70" width="216.4" height="28" fill="#0369a1" rx="3"/>
+<text x="422.4" y="89" fill="#1c1917" font-size="12" font-family="Segoe UI, Helvetica, Arial, sans-serif">20.0%</text>
+<text x="192" y="127" text-anchor="end" fill="#1c1917" font-size="12" font-family="Segoe UI, Helvetica, Arial, sans-serif">solo padre</text>
+<rect x="200" y="108" width="43.6" height="28" fill="#0369a1" rx="3"/>
+<text x="249.6" y="127" fill="#1c1917" font-size="12" font-family="Segoe UI, Helvetica, Arial, sans-serif">4.0%</text>
+<text x="192" y="165" text-anchor="end" fill="#1c1917" font-size="12" font-family="Segoe UI, Helvetica, Arial, sans-serif">padrastro/madrastra</text>
+<rect x="200" y="146" width="108.3" height="28" fill="#0369a1" rx="3"/>
+<text x="314.3" y="165" fill="#1c1917" font-size="12" font-family="Segoe UI, Helvetica, Arial, sans-serif">10.0%</text>
+<text x="192" y="203" text-anchor="end" fill="#1c1917" font-size="12" font-family="Segoe UI, Helvetica, Arial, sans-serif">otros</text>
+<rect x="200" y="184" width="48.2" height="28" fill="#0369a1" rx="3"/>
+<text x="254.2" y="203" fill="#1c1917" font-size="12" font-family="Segoe UI, Helvetica, Arial, sans-serif">4.5%</text>
+<text x="192" y="241" text-anchor="end" fill="#1c1917" font-size="12" font-family="Segoe UI, Helvetica, Arial, sans-serif">vive sola</text>
+<rect x="200" y="222" width="1.0" height="28" fill="#0369a1" rx="3"/>
+<text x="206.3" y="241" fill="#1c1917" font-size="12" font-family="Segoe UI, Helvetica, Arial, sans-serif">0.0%</text>
+<text x="192" y="279" text-anchor="end" fill="#1c1917" font-size="12" font-family="Segoe UI, Helvetica, Arial, sans-serif">CAR</text>
+<rect x="200" y="260" width="2.0" height="28" fill="#0369a1" rx="3"/>
+<text x="208.0" y="279" fill="#1c1917" font-size="12" font-family="Segoe UI, Helvetica, Arial, sans-serif">0.2%</text>
+</svg>

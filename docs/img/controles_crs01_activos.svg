@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="920" height="808" viewBox="0 0 920 808" role="img">
+<title>% hogares con el activo (C1P110) · FACTOR_VIV · CRS01</title>
+<rect width="920" height="808" fill="#fafaf9"/>
+<text x="200" y="18" fill="#78716c" font-size="12" font-family="Segoe UI, Helvetica, Arial, sans-serif">% hogares con el activo (C1P110) · FACTOR_VIV · CRS01</text>
+<text x="192" y="51" text-anchor="end" fill="#1c1917" font-size="12" font-family="Segoe UI, Helvetica, Arial, sans-serif">Refrigeradora/congeladora</text>
+<rect x="200" y="32" width="416.5" height="28" fill="#0369a1" rx="3"/>
+<text x="622.5" y="51" fill="#1c1917" font-size="12" font-family="Segoe UI, Helvetica, Arial, sans-serif">59.2%</text>
+<text x="192" y="89" text-anchor="end" fill="#1c1917" font-size="12" font-family="Segoe UI, Helvetica, Arial, sans-serif">Lavadora</text>
+<rect x="200" y="70" width="242.1" height="28" fill="#0369a1" rx="3"/>
+<text x="448.1" y="89" fill="#1c1917" font-size="12" font-family="Segoe UI, Helvetica, Arial, sans-serif">34.4%</text>
+<text x="192" y="127" text-anchor="end" fill="#1c1917" font-size="12" font-family="Segoe UI, Helvetica, Arial, sans-serif">Computadora/laptop/tablet</text>
+<rect x="200" y="108" width="242.1" height="28" fill="#0369a1" rx="3"/>
+<text x="448.1" y="127" fill="#1c1917" font-size="12" font-family="Segoe UI, Helvetica, Arial, sans-serif">34.4%</text>
+<text x="192" y="165" text-anchor="end" fill="#1c1917" font-size="12" font-family="Segoe UI, Helvetica, Arial, sans-serif">Internet</text>
+<rect x="200" y="146" width="474.2" height="28" fill="#0369a1" rx="3"/>
+<text x="680.2" y="165" fill="#1c1917" font-size="12" font-family="Segoe UI, Helvetica, Arial, sans-serif">67.4%</text>
+<text x="192" y="203" text-anchor="end" fill="#1c1917" font-size="12" font-family="Segoe UI, Helvetica, Arial, sans-serif">TV cable/satelital</text>
+<rect x="200" y="184" width="218.4" height="28" fill="#0369a1" rx="3"/>
+<text x="424.4" y="203" fill="#1c1917" font-size="12" font-family="Segoe UI, Helvetica, Arial, sans-serif">31.0%</text>
+<text x="192" y="241" text-anchor="end" fill="#1c1917" font-size="12" font-family="Segoe UI, Helvetica, Arial, sans-serif">Teléfono fijo</text>
+<rect x="200" y="222" width="47.2" height="28" fill="#0369a1" rx="3"/>
+<text x="253.2" y="241" fill="#1c1917" font-size="12" font-family="Segoe UI, Helvetica, Arial, sans-serif">6.7%</text>
+<text x="192" y="279" text-anchor="end" fill="#1c1917" font-size="12" font-family="Segoe UI, Helvetica, Arial, sans-serif">Celular</text>
+<rect x="200" y="260" width="664.0" height="28" fill="#0369a1" rx="3"/>
+<text x="870.0" y="279" fill="#1c1917" font-size="12" font-family="Segoe UI, Helvetica, Arial, sans-serif">94.3%</text>
+<text x="192" y="317" text-anchor="end" fill="#1c1917" font-size="12" font-family="Segoe UI, Helvetica, Arial, sans-serif">Microondas</text>
+<rect x="200" y="298" width="131.2" height="28" fill="#0369a1" rx="3"/>
+<text x="337.2" y="317" fill="#1c1917" font-size="12" font-family="Segoe UI, Helvetica, Arial, sans-serif">18.6%</text>
+<text x="192" y="355" text-anchor="end" fill="#1c1917" font-size="12" font-family="Segoe UI, Helvetica, Arial, sans-serif">Servicio doméstico</text>
+<rect x="200" y="336" width="21.6" height="28" fill="#0369a1" rx="3"/>
+<text x="227.6" y="355" fill="#1c1917" font-size="12" font-family="Segoe UI, Helvetica, Arial, sans-serif">3.1%</text>
+<text x="192" y="393" text-anchor="end" fill="#1c1917" font-size="12" font-family="Segoe UI, Helvetica, Arial, sans-serif">Equipo de sonido</text>
+<rect x="200" y="374" width="244.1" height="28" fill="#0369a1" rx="3"/>
+<text x="450.1" y="393" fill="#1c1917" font-size="12" font-family="Segoe UI, Helvetica, Arial, sans-serif">34.7%</text>
+<text x="192" y="431" text-anchor="end" fill="#1c1917" font-size="12" font-family="Segoe UI, Helvetica, Arial, sans-serif">Televisor a color</text>
+<rect x="200" y="412" width="512.8" height="28" fill="#0369a1" rx="3"/>
+<text x="718.8" y="431" fill="#1c1917" font-size="12" font-family="Segoe UI, Helvetica, Arial, sans-serif">72.9%</text>
+<text x="192" y="469" text-anchor="end" fill="#1c1917" font-size="12" font-family="Segoe UI, Helvetica, Arial, sans-serif">Cocina a gas</text>
+<rect x="200" y="450" width="624.0" height="28" fill="#0369a1" rx="3"/>
+<text x="830.0" y="469" fill="#1c1917" font-size="12" font-family="Segoe UI, Helvetica, Arial, sans-serif">88.7%</text>
+<text x="192" y="507" text-anchor="end" fill="#1c1917" font-size="12" font-family="Segoe UI, Helvetica, Arial, sans-serif">Licuadora</text>
+<rect x="200" y="488" width="483.2" height="28" fill="#0369a1" rx="3"/>
+<text x="689.2" y="507" fill="#1c1917" font-size="12" font-family="Segoe UI, Helvetica, Arial, sans-serif">68.7%</text>
+<text x="192" y="545" text-anchor="end" fill="#1c1917" font-size="12" font-family="Segoe UI, Helvetica, Arial, sans-serif">Plancha eléctrica</text>
+<rect x="200" y="526" width="324.3" height="28" fill="#0369a1" rx="3"/>
+<text x="530.3" y="545" fill="#1c1917" font-size="12" font-family="Segoe UI, Helvetica, Arial, sans-serif">46.1%</text>
+<text x="192" y="583" text-anchor="end" fill="#1c1917" font-size="12" font-family="Segoe UI, Helvetica, Arial, sans-serif">Auto/camioneta particular</text>
+<rect x="200" y="564" width="83.1" height="28" fill="#0369a1" rx="3"/>
+<text x="289.1" y="583" fill="#1c1917" font-size="12" font-family="Segoe UI, Helvetica, Arial, sans-serif">11.8%</text>
+<text x="192" y="621" text-anchor="end" fill="#1c1917" font-size="12" font-family="Segoe UI, Helvetica, Arial, sans-serif">Bicicleta</text>
+<rect x="200" y="602" width="105.5" height="28" fill="#0369a1" rx="3"/>
+<text x="311.5" y="621" fill="#1c1917" font-size="12" font-family="Segoe UI, Helvetica, Arial, sans-serif">15.0%</text>
+<text x="192" y="659" text-anchor="end" fill="#1c1917" font-size="12" font-family="Segoe UI, Helvetica, Arial, sans-serif">Motocicleta</text>
+<rect x="200" y="640" width="75.7" height="28" fill="#0369a1" rx="3"/>
+<text x="281.7" y="659" fill="#1c1917" font-size="12" font-family="Segoe UI, Helvetica, Arial, sans-serif">10.8%</text>
+<text x="192" y="697" text-anchor="end" fill="#1c1917" font-size="12" font-family="Segoe UI, Helvetica, Arial, sans-serif">Triciclo</text>
+<rect x="200" y="678" width="10.0" height="28" fill="#0369a1" rx="3"/>
+<text x="216.0" y="697" fill="#1c1917" font-size="12" font-family="Segoe UI, Helvetica, Arial, sans-serif">1.4%</text>
+<text x="192" y="735" text-anchor="end" fill="#1c1917" font-size="12" font-family="Segoe UI, Helvetica, Arial, sans-serif">Mototaxi</text>
+<rect x="200" y="716" width="45.5" height="28" fill="#0369a1" rx="3"/>
+<text x="251.5" y="735" fill="#1c1917" font-size="12" font-family="Segoe UI, Helvetica, Arial, sans-serif">6.5%</text>
+<text x="192" y="773" text-anchor="end" fill="#1c1917" font-size="12" font-family="Segoe UI, Helvetica, Arial, sans-serif">Camión</text>
+<rect x="200" y="754" width="4.4" height="28" fill="#0369a1" rx="3"/>
+<text x="210.4" y="773" fill="#1c1917" font-size="12" font-family="Segoe UI, Helvetica, Arial, sans-serif">0.6%</text>
+</svg>

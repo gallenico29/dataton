@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="120" viewBox="0 0 720 120" role="img">
+<title>Filtro (antes del k-medias): Violencia física 12m</title>
+<rect width="720" height="120" fill="#fafaf9"/>
+<text x="160" y="18" fill="#78716c" font-size="12" font-family="Segoe UI, Helvetica, Arial, sans-serif">Filtro (antes del k-medias): Violencia física 12m</text>
+<text x="152" y="51" text-anchor="end" fill="#1c1917" font-size="12" font-family="Segoe UI, Helvetica, Arial, sans-serif">Sí fis</text>
+<rect x="160" y="32" width="169.8" height="28" fill="#c2410c" rx="3"/>
+<text x="335.8" y="51" fill="#1c1917" font-size="12" font-family="Segoe UI, Helvetica, Arial, sans-serif">25.8%</text>
+<text x="152" y="89" text-anchor="end" fill="#1c1917" font-size="12" font-family="Segoe UI, Helvetica, Arial, sans-serif">No fis</text>
+<rect x="160" y="70" width="488.0" height="28" fill="#0369a1" rx="3"/>
+<text x="654.0" y="89" fill="#1c1917" font-size="12" font-family="Segoe UI, Helvetica, Arial, sans-serif">74.2%</text>
+</svg>

@@ -1,5 +1,10 @@
 # Catálogo de preguntas de violencia por cuestionario
 
+> **Qué es este informe.** Qué ítems de violencia trae cada cuestionario (CRS03, CRS04, CRS01, CRS02): ámbito, tipo, si hay módulo sexual.
+> **Qué no es.** No son prevalencias ni missing (eso es [violencia_crs04_si_no_missing.md](violencia_crs04_si_no_missing.md)). No es el inventario de *todas* las preguntas.
+> **Tipo.** Descriptivo.
+> **Lo escribe.** Texto a mano (no sale de un script).
+
 ENARES 2024. Inventario extraído de los diccionarios PDF en `datos_dev/`.
 
 **Sí se pregunta por tipos de violencia en colegios**, no solo a mujeres de 18+. Lo que cambia es el tipo de violencia y el ámbito, no si se pregunta o no.
@@ -161,6 +166,8 @@ Fuentes:
 Tablas: `raw.crs04_cap200`, `raw.crs04_cap248` / `analisis.crs04_adolescentes`.
 
 QC de sí/no, missing y construcción de indicadores (solo mujeres, ponderado): [violencia_crs04_si_no_missing.md](violencia_crs04_si_no_missing.md).
+
+Descriptivos de controles (territorio, hogar, idioma; vivienda CRS01 no se pega) e inventario de **todas** las variables CRS04 y CRS01 (mujeres 18+): [descriptivos_controles.md](descriptivos_controles.md).
 
 ### CAP200 — psicológica y física (casa y colegio)
 

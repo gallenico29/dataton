@@ -1,10 +1,15 @@
 # Violencia CRS04: sí / no y missing
 
+> **Qué es este informe.** Cómo se construyen las 3 Y (psicológica, física, sexual a 12 meses) y cómo se trata el missing / skip. Tablas de prevalencia ponderada.
+> **Qué no es.** No es el catálogo de ítems de todos los cuestionarios. No es un modelo. La definición corta está también en metodologia.md §3.
+> **Tipo.** Descriptivo.
+> **Lo escribe.** Texto a mano; las figuras las escribe `scripts/descriptivos/generate_crs04_charts.py`.
+
 Solo mujeres (`SEXO = 1`) · n muestra = 9,608 · N expandida = 1,419,491 con `FACTOR_ALUMNOS` · se excluyen 9,199 hombres · 12–17 años · ENARES 2024.
 
 Tabla: `analisis.crs04_adolescentes`. Catálogo de ítems: [violencia_por_cuestionario.md](violencia_por_cuestionario.md).
 
-![Prevalencia 12 meses ponderada](img/crs04_kpis.svg)
+![Prevalencia 12 meses ponderada](../img/crs04_kpis.svg)
 
 Conteos y % son población expandida: `SUM(FACTOR_ALUMNOS)`. El factor no tiene null (mín 2.1, máx 5,194). `n = 9,608` es el número de entrevistas.
 
@@ -30,7 +35,7 @@ En esta base hay tres tipos de vacío. Solo el primero sería un problema de cal
 
 Denominador = 1,419,491 alumnas expandidas. No hay categoría “missing”: cada fila es sí o no.
 
-![Distribución sí / no de los tres targets](img/crs04_targets_12m.svg)
+![Distribución sí / no de los tres targets](../img/crs04_targets_12m.svg)
 
 | Indicador | Sí (N) | % sí | No (N) | % no | Missing |
 |---|---:|---:|---:|---:|---:|
@@ -42,7 +47,7 @@ Denominador = 1,419,491 alumnas expandidas. No hay categoría “missing”: cad
 
 Sí = algún ítem del bloque = 1 **y** filtro 12m = 1. Sexual usa `C4P248C_i`. Ponderado `FACTOR_ALUMNOS`.
 
-![Por ámbito casa vs colegio](img/crs04_ambito.svg)
+![Por ámbito casa vs colegio](../img/crs04_ambito.svg)
 
 | Bloque | Sí 12m (N) | % | No (N) | Missing ítems | NULL filtro (N) |
 |---|---:|---:|---:|---:|---|
@@ -119,7 +124,7 @@ Suma de los tres binarios 12m, ponderada. Cada componente es 0/1 sin missing, as
 
 **65.8%** con al menos un tipo (N = 934,649).
 
-![Índice 0–3: cuántos tipos a la vez](img/crs04_indice.svg)
+![Índice 0–3: cuántos tipos a la vez](../img/crs04_indice.svg)
 
 | Índice | Significado | N expandida | % | Missing |
 |---:|---|---:|---:|---:|
@@ -152,7 +157,7 @@ Tres errores en la tabla inicial de indicadores:
 
 Si omites el filtro de 12 meses, inflas la prevalencia. Eso no es missing: es lifetime vs año.
 
-![Vida vs últimos 12 meses](img/crs04_vida_vs_12m.svg)
+![Vida vs últimos 12 meses](../img/crs04_vida_vs_12m.svg)
 
 | Bloque | Algún sí de por vida | Algún sí en últimos 12 meses |
 |---|---:|---:|

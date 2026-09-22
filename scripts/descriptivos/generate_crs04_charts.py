@@ -1,10 +1,14 @@
-"""SVG charts for docs/violencia_crs04_si_no_missing.md (GitHub-renderable)."""
+"""SVG charts for docs/descriptivos/violencia_crs04_si_no_missing.md."""
 
 from __future__ import annotations
 
+import sys
 from pathlib import Path
 
-OUT = Path(__file__).resolve().parents[1] / "docs" / "img"
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from rutas import IMG
+
+OUT = IMG
 N = 1_419_491
 
 YES = "#c2410c"
