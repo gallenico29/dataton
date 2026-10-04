@@ -1,0 +1,79 @@
+{
+  "fuente": "Ministerio Publico 2026 (archivo adjunto)",
+  "ambito": "Varias filas ubican el servicio en Lima / Canete. No es cobertura nacional.",
+  "nota": "No se suma a las prevalencias ENARES. Unidad: denuncias/expedientes, no victimizacion 12m.",
+  "filas": [
+    {
+      "indicador": "MINISTERIO PÚBLICO 2026",
+      "mujer": null,
+      "hombre": null,
+      "lugar": null
+    },
+    {
+      "indicador": "INDICADOR",
+      "mujer": null,
+      "hombre": null,
+      "lugar": "Donde ocurrió el hecho | Ubicación del servicio | Donde nació la victima"
+    },
+    {
+      "indicador": "N° de denuncias de violencia contra la mujer y los integrantes del grupo familiar atendidas",
+      "mujer": 129.0,
+      "hombre": 537.0,
+      "lugar": null
+    },
+    {
+      "indicador": "N° de denuncias por violencia sexual por modalidades de violencia (acoso sexual en espacios públicos, hostigamiento sexual, violación, entre otros)",
+      "mujer": 6.0,
+      "hombre": 45.0,
+      "lugar": null
+    },
+    {
+      "indicador": "N° de denuncia de tocamientos y/o otros actos de connotación sexual",
+      "mujer": 8.0,
+      "hombre": 49.0,
+      "lugar": null
+    },
+    {
+      "indicador": "N° de denuncias por trata de personas, especificando la modalidad (explotacion sexual, trabajo forzoso, etc",
+      "mujer": null,
+      "hombre": null,
+      "lugar": null
+    },
+    {
+      "indicador": "N° de expedientes que han ingresado a las fiscalías por violencia en el marco de la Ley 30364",
+      "mujer": null,
+      "hombre": null,
+      "lugar": null
+    },
+    {
+      "indicador": "N° de casos atendidos en camara gessel en el marco de la ley 30364",
+      "mujer": 48.0,
+      "hombre": 8.0,
+      "lugar": "35 | LIMA | CAÑETE"
+    },
+    {
+      "indicador": "N° de casos ingresados por desprotección familiar en NNA",
+      "mujer": 47.0,
+      "hombre": 45.0,
+      "lugar": "LIMA | CAÑETE | SAN VICENTE, IMPERIAL,SAN LUIS, NUEVO IMPERIAL,CERRO AZUL"
+    },
+    {
+      "indicador": "N° de casos de feminicidio y tentativa de feminicidio",
+      "mujer": 0.0,
+      "hombre": 3.0,
+      "lugar": null
+    },
+    {
+      "indicador": "N° de capacitaciones realizadas por temática relacionados a la Ley N° 30364 realizadas, identificando el tipo de participantes",
+      "mujer": null,
+      "hombre": null,
+      "lugar": null
+    },
+    {
+      "indicador": "N°  de documentos normativos que se elaboraron y aprobaron en el marco de la Ley N° 30364",
+      "mujer": null,
+      "hombre": null,
+      "lugar": null
+    }
+  ]
+}

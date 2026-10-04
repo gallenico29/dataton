@@ -21,6 +21,48 @@ docs/
 
 Índice de informes (qué es cada uno): [docs/README.md](docs/README.md).
 
+## Levantar el dashboard
+
+Interfaz en `web/` (HTML + JS, sin npm). El servidor tiene que mandar UTF-8; si no, las ñ y tildes salen rotas.
+
+**1.** En una terminal, ve a la raíz del repo (`C:\dev\dataton` o donde hayas clonado). Tienes que ver `web\serve.py` y `web\index.html`.
+
+**2.** Comprueba que existan al menos estos archivos (si faltan, ve al paso 5):
+
+- `web/index.html`
+- `web/data/enares.json`
+- `web/data/departamentos.json`
+- `web/data/cem.geojson`
+- `web/data/peru_departamentos.geojson`
+- `web/data/perfiles.json`
+
+**3.** Arranca el servidor (déjalo corriendo; no cierres esa terminal):
+
+```bash
+python web/serve.py
+```
+
+Tiene que imprimir:
+
+```
+Dashboard en http://127.0.0.1:8765/
+```
+
+**4.** En el navegador abre exactamente esa URL: [http://127.0.0.1:8765/](http://127.0.0.1:8765/). Debes ver el mapa del Perú, filtros (violencia, edad, región) y el panel. Para parar: `Ctrl+C` en la terminal.
+
+No abras `web/index.html` con doble clic ni con `file://`: los módulos JS no cargan y las tildes se rompen. Tampoco uses `python -m http.server` (no pone `charset=utf-8`).
+
+Puerto ocupado o quieres otro: `python web/serve.py 8766` y abre `http://127.0.0.1:8766/`.
+
+**5.** Si el mapa sale vacío, “No se pudieron cargar los datos”, o no están los JSON del paso 2, regenera y vuelve a servir:
+
+```bash
+python scripts/tablas/armar_dashboard.py
+python web/serve.py
+```
+
+`armar_dashboard.py` pide `data/tablas/crs04_modelo.parquet` y los CEM/SALUD/MP en `data/`. Recetario: [paso 4](#4-dashboard-web).
+
 | Qué | Dónde |
 | --- | --- |
 | Microdatos INEI | `datos_dev/` |
@@ -100,10 +142,29 @@ python scripts/descriptivos/generate_crs04_charts.py
 | `descriptivos_crs01.py` | `docs/descriptivos/descriptivos_crs01_vs_crs04.md` |
 | `generate_crs04_charts.py` | solo figuras `docs/img/crs04_*.svg` (el texto del doc de violencia es a mano) |
 
+### 4. Dashboard (`web/`)
+
+Solo ver la app (JSON ya listos): [Levantar el dashboard](#levantar-el-dashboard).
+
+Necesita el JSON de `scripts/tablas/armar_dashboard.py` (y por tanto `crs04_modelo.parquet` + los CSV/GeoJSON en `data/`).
+
+```bash
+python scripts/tablas/armar_dashboard.py
+python web/serve.py
+```
+
+Abre http://127.0.0.1:8765/ — módulos en `web/js/`. Usa `web/serve.py` (manda UTF-8) y no abras el HTML como `file://`.
+
+| Comando | Sale |
+| --- | --- |
+| `armar_dashboard.py` | `web/data/` (ENARES por dpto, CEM, SALUD, MP) |
+| servidor HTTP | interfaz en el navegador |
+
 ### Qué no sale de un script
 
 Estos se editan a mano. Correr Python **no** los regenera:
 
 - [docs/metodologia/metodologia.md](docs/metodologia/metodologia.md)
+- [docs/metodologia/viabilidad_desfases.md](docs/metodologia/viabilidad_desfases.md)
 - [docs/descriptivos/violencia_por_cuestionario.md](docs/descriptivos/violencia_por_cuestionario.md)
 - [docs/descriptivos/violencia_crs04_si_no_missing.md](docs/descriptivos/violencia_crs04_si_no_missing.md) (el texto; las SVG sí las hace `generate_crs04_charts.py`)

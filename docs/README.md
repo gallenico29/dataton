@@ -35,7 +35,7 @@ python scripts/descriptivos/descriptivos_crs01.py
 python scripts/descriptivos/generate_crs04_charts.py
 ```
 
-No se regeneran (texto a mano): `metodologia/metodologia.md`, `descriptivos/violencia_por_cuestionario.md`, el texto de `violencia_crs04_si_no_missing.md`.
+No se regeneran (texto a mano): `metodologia/metodologia.md`, `metodologia/viabilidad_desfases.md`, `descriptivos/violencia_por_cuestionario.md`, el texto de `violencia_crs04_si_no_missing.md`.
 
 ---
 
@@ -65,6 +65,7 @@ Decisiones. No son coeficientes ni clusters.
 | --- | --- |
 | [metodologia.md](metodologia/metodologia.md) | Universo, Y, qué entra a X, leakage, lista cerrada de recodes. |
 | [diseno_muestral.md](metodologia/diseno_muestral.md) | PSU, estrato, peso, estratos flacos (los números). |
+| [viabilidad_desfases.md](metodologia/viabilidad_desfases.md) | Hay / pedido / decisión de cada desfase del mock. Texto a mano. |
 
 ---
 

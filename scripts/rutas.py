@@ -17,6 +17,9 @@ ROOT = Path(__file__).resolve().parents[1]
 CRUDOS = ROOT / "datos_dev"
 TABLAS = ROOT / "data" / "tablas"
 
+WEB = ROOT / "web"
+WEB_DATA = WEB / "data"
+
 DOCS = ROOT / "docs"
 DOC_DESC = DOCS / "descriptivos"
 DOC_MET = DOCS / "metodologia"

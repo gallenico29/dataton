@@ -1,0 +1,24 @@
+{
+  "universo": "Alumnas 12-17, cuestionario CRS.04, SEXO=1. Departamento = de la IE, no de la casa.",
+  "encuesta": "ENARES 2024",
+  "cem": {
+    "archivo": "CEM Regulares (2025).geojson",
+    "n": 175,
+    "tipo": "REGULAR",
+    "periodo": "ENE-FEB 2025",
+    "fecha": "2025-04-07",
+    "nota": "175 centros. Sin horarios ni otras modalidades. Sin registro no implica sin servicio."
+  },
+  "x_labels": {
+    "toma_en_cuenta": "La toman en cuenta",
+    "peleas_casa": "Peleas en casa",
+    "se_queda_sola": "Se queda sola",
+    "se_siente_mal": "Se siente mal en el colegio",
+    "act_padres_golpear": "Actitud: padres pueden golpear",
+    "act_deje_colegio": "Actitud: deje el colegio",
+    "falta_colegio": "Falta al colegio para ayudar"
+  },
+  "fuentes_fuera": {
+    "inei_its": "INEI(Sheet1).csv parece conocimiento de ITS, sin anio ni territorio. No entra al perfil."
+  }
+}

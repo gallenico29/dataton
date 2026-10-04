@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Prioridades territoriales &middot; ENARES + CEM</title>
+  <meta name="description" content="Lectura territorial de violencia reportada (ENARES 2024) y oferta CEM 2025.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,400..800;1,14..32,400..800&amp;subset=latin,latin-ext&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+  <link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+  <header>
+    <div class="brand"><i>E</i> ENARES &middot; Prioridades territoriales</div>
+    <small>Alumnas 12-17 a&ntilde;os &middot; oferta CEM &middot; fuentes administrativas</small>
+  </header>
+  <main class="shell">
+    <div class="heading">
+      <div>
+        <h1>Qu&eacute; se reporta en cada territorio, y qu&eacute; oferta hay</h1>
+        <p>Prevalencias ENARES 2024 por departamento de la IE, factores asociados y CEM regulares 2025. No predice a una alumna.</p>
+      </div>
+      <span class="demo">Cifras reales &middot; CEM del GeoJSON 2025</span>
+    </div>
+
+    <div class="filters">
+      <label class="filter">Tipo de violencia
+        <select id="violence"></select>
+      </label>
+      <label class="filter">Adolescentes mujeres
+        <select id="age"></select>
+      </label>
+      <label class="filter">Regi&oacute;n
+        <select id="department"></select>
+      </label>
+      <label class="filter">Encuesta de referencia
+        <select id="period" disabled>
+          <option>ENARES 2024</option>
+        </select>
+      </label>
+    </div>
+
+    <div class="grid">
+      <aside class="card">
+        <span class="eyebrow">Selecci&oacute;n territorial</span>
+        <h2>Per&uacute;</h2>
+        <p class="muted">El color es la prevalencia ENARES del filtro. Los puntos son CEM regulares. El departamento es el de la escuela.</p>
+        <div class="maparea" aria-label="Mapa de departamentos y CEM">
+          <div id="leaflet"></div>
+        </div>
+        <p class="mapfoot">Coropleta = ENARES 2024 (ponderado). Puntos = CEM REGULAR, ENE-FEB 2025. Sin registro no implica sin servicio. Clic en un departamento para acercar.</p>
+        <div class="regionlist">
+          <h3>Todas las regiones</h3>
+          <div id="allregions"></div>
+        </div>
+        <div class="sourcecheck" id="cemterritory"></div>
+      </aside>
+
+      <section class="card" aria-live="polite">
+        <span class="eyebrow" id="context">Lectura territorial</span>
+        <h2 id="title"></h2>
+        <div class="story" id="story"></div>
+        <div class="stats" id="stats"></div>
+        <div id="ecological"></div>
+        <button class="discover" id="discover" aria-expanded="false" aria-controls="profilelist">Descubrir m&aacute;s perfiles &rarr;</button>
+        <div id="profilelist" hidden>
+          <div class="sectionline">
+            <div>
+              <h2>Perfiles ordenados por riesgo</h2>
+              <p class="muted" style="margin:0">Tres tipos k-medias entre quienes s&iacute; reportaron el filtro. El #1 tiene m&aacute;s carga de X y m&aacute;s superposici&oacute;n de las otras violencias.</p>
+            </div>
+            <small>k-medias nacional</small>
+          </div>
+          <div id="profiles"></div>
+          <details class="factorbox">
+            <summary>Comparar factores del recorte territorial vs nacional</summary>
+            <p class="muted">Medias de X en este departamento y edad. No son los cl&uacute;steres de arriba.</p>
+            <div id="factors"></div>
+          </details>
+        </div>
+        <div class="actions">
+          <h3>&iquest;Qui&eacute;nes podr&iacute;an intervenir conjuntamente?</h3>
+          <p id="nextstep"></p>
+          <div id="entities"></div>
+        </div>
+      </section>
+    </div>
+
+    <footer class="method">
+      <span class="eyebrow">Gu&iacute;a de interpretaci&oacute;n</span>
+      <h2>C&oacute;mo leer este tablero</h2>
+      <p>ENARES mide victimizaci&oacute;n reportada a 12 meses en alumnas. CEM cuenta oferta registrada. MINSA y Ministerio P&uacute;blico son atenciones o denuncias de otros universos. No se suman.</p>
+      <div class="methodgrid">
+        <div>
+          <b>Universo</b>
+          <p>Mujeres 12-17 en IE (CRS.04). El departamento es de la escuela. El 12,7 % no vive en el distrito de la IE.</p>
+        </div>
+        <div>
+          <b>Asociaciones</b>
+          <p>Que un factor sea m&aacute;s alto aqu&iacute; no demuestra causalidad. Las actitudes son de la alumna, no normas adultas.</p>
+        </div>
+        <div>
+          <b>CEM</b>
+          <p>175 centros REGULAR. Sin horarios ni capacidad. Otras modalidades no est&aacute;n en este archivo.</p>
+        </div>
+      </div>
+    </footer>
+
+    <section class="devnotes">
+      <span class="eyebrow">Fuentes adjuntas</span>
+      <h2>Qu&eacute; entra y qu&eacute; se queda afuera</h2>
+      <p>El mapa y las prevalencias usan ENARES + CEM GeoJSON. SALUD, MP e INEI se listan abajo con sus l&iacute;mites; no se mezclan con el porcentaje ENARES.</p>
+      <div id="admin-tables"></div>
+    </section>
+  </main>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

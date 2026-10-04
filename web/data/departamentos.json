@@ -1,0 +1,277 @@
+[
+  {
+    "key": "amazonas",
+    "code": "01",
+    "enares": "AMAZONAS",
+    "label": "Amazonas",
+    "n_cem": 5,
+    "centro": {
+      "lat": -6.03635,
+      "lon": -78.0544
+    }
+  },
+  {
+    "key": "ancash",
+    "code": "02",
+    "enares": "ANCASH",
+    "label": "Áncash",
+    "n_cem": 20,
+    "centro": {
+      "lat": -9.30804,
+      "lon": -77.66279
+    }
+  },
+  {
+    "key": "apurimac",
+    "code": "03",
+    "enares": "APURIMAC",
+    "label": "Apurímac",
+    "n_cem": 7,
+    "centro": {
+      "lat": -13.93189,
+      "lon": -72.99784
+    }
+  },
+  {
+    "key": "arequipa",
+    "code": "04",
+    "enares": "AREQUIPA",
+    "label": "Arequipa",
+    "n_cem": 0,
+    "centro": {
+      "lat": null,
+      "lon": null
+    }
+  },
+  {
+    "key": "ayacucho",
+    "code": "05",
+    "enares": "AYACUCHO",
+    "label": "Ayacucho",
+    "n_cem": 10,
+    "centro": {
+      "lat": -13.52622,
+      "lon": -74.0762
+    }
+  },
+  {
+    "key": "cajamarca",
+    "code": "06",
+    "enares": "CAJAMARCA",
+    "label": "Cajamarca",
+    "n_cem": 12,
+    "centro": {
+      "lat": -6.86897,
+      "lon": -78.5919
+    }
+  },
+  {
+    "key": "callao",
+    "code": "07",
+    "enares": "CALLAO",
+    "label": "Callao",
+    "n_cem": 4,
+    "centro": {
+      "lat": -11.9573,
+      "lon": -77.13532
+    }
+  },
+  {
+    "key": "cusco",
+    "code": "08",
+    "enares": "CUSCO",
+    "label": "Cusco",
+    "n_cem": 16,
+    "centro": {
+      "lat": -13.54249,
+      "lon": -72.153
+    }
+  },
+  {
+    "key": "huancavelica",
+    "code": "09",
+    "enares": "HUANCAVELICA",
+    "label": "Huancavelica",
+    "n_cem": 7,
+    "centro": {
+      "lat": -12.95029,
+      "lon": -74.85764
+    }
+  },
+  {
+    "key": "huanuco",
+    "code": "10",
+    "enares": "HUANUCO",
+    "label": "Huánuco",
+    "n_cem": 11,
+    "centro": {
+      "lat": -9.6106,
+      "lon": -76.34634
+    }
+  },
+  {
+    "key": "ica",
+    "code": "11",
+    "enares": "ICA",
+    "label": "Ica",
+    "n_cem": 7,
+    "centro": {
+      "lat": -14.08039,
+      "lon": -75.66609
+    }
+  },
+  {
+    "key": "junin",
+    "code": "12",
+    "enares": "JUNIN",
+    "label": "Junín",
+    "n_cem": 11,
+    "centro": {
+      "lat": -11.61654,
+      "lon": -75.31485
+    }
+  },
+  {
+    "key": "la_libertad",
+    "code": "13",
+    "enares": "LA LIBERTAD",
+    "label": "La Libertad",
+    "n_cem": 14,
+    "centro": {
+      "lat": -7.84969,
+      "lon": -78.63736
+    }
+  },
+  {
+    "key": "lambayeque",
+    "code": "14",
+    "enares": "LAMBAYEQUE",
+    "label": "Lambayeque",
+    "n_cem": 1,
+    "centro": {
+      "lat": -6.6398,
+      "lon": -79.78941
+    }
+  },
+  {
+    "key": "lima",
+    "code": "15",
+    "enares": "LIMA",
+    "label": "Lima",
+    "n_cem": 31,
+    "centro": {
+      "lat": -11.87104,
+      "lon": -76.94344
+    }
+  },
+  {
+    "key": "loreto",
+    "code": "16",
+    "enares": "LORETO",
+    "label": "Loreto",
+    "n_cem": 2,
+    "centro": {
+      "lat": -6.62198,
+      "lon": -75.55977
+    }
+  },
+  {
+    "key": "madre_de_dios",
+    "code": "17",
+    "enares": "MADRE DE DIOS",
+    "label": "Madre de Dios",
+    "n_cem": 0,
+    "centro": {
+      "lat": null,
+      "lon": null
+    }
+  },
+  {
+    "key": "moquegua",
+    "code": "18",
+    "enares": "MOQUEGUA",
+    "label": "Moquegua",
+    "n_cem": 0,
+    "centro": {
+      "lat": null,
+      "lon": null
+    }
+  },
+  {
+    "key": "pasco",
+    "code": "19",
+    "enares": "PASCO",
+    "label": "Pasco",
+    "n_cem": 4,
+    "centro": {
+      "lat": -10.62277,
+      "lon": -75.86283
+    }
+  },
+  {
+    "key": "piura",
+    "code": "20",
+    "enares": "PIURA",
+    "label": "Piura",
+    "n_cem": 0,
+    "centro": {
+      "lat": null,
+      "lon": null
+    }
+  },
+  {
+    "key": "puno",
+    "code": "21",
+    "enares": "PUNO",
+    "label": "Puno",
+    "n_cem": 0,
+    "centro": {
+      "lat": null,
+      "lon": null
+    }
+  },
+  {
+    "key": "san_martin",
+    "code": "22",
+    "enares": "SAN MARTIN",
+    "label": "San Martín",
+    "n_cem": 10,
+    "centro": {
+      "lat": -6.80567,
+      "lon": -76.62489
+    }
+  },
+  {
+    "key": "tacna",
+    "code": "23",
+    "enares": "TACNA",
+    "label": "Tacna",
+    "n_cem": 0,
+    "centro": {
+      "lat": null,
+      "lon": null
+    }
+  },
+  {
+    "key": "tumbes",
+    "code": "24",
+    "enares": "TUMBES",
+    "label": "Tumbes",
+    "n_cem": 0,
+    "centro": {
+      "lat": null,
+      "lon": null
+    }
+  },
+  {
+    "key": "ucayali",
+    "code": "25",
+    "enares": "UCAYALI",
+    "label": "Ucayali",
+    "n_cem": 3,
+    "centro": {
+      "lat": -9.38493,
+      "lon": -74.60084
+    }
+  }
+]

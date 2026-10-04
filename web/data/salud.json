@@ -1,0 +1,67 @@
+{
+  "fuente": "MINSA: cuadro de violencia familiar (archivo adjunto)",
+  "ambito": "Sin ubicacion de servicio en las filas; no se pega a un departamento.",
+  "nota": "La fila de casos (143 mujeres + 306 hombres) no cuadra con el total 1 449. Se muestra tal cual.",
+  "filas": [
+    {
+      "indicador": "N° de casos atendidos por los establecimientos de salud por violencia en el marco de la Ley N° 30364.",
+      "mujer": 143.0,
+      "hombre": 306.0,
+      "total": 1449.0
+    },
+    {
+      "indicador": "N° de niñas menores de 14 años embarazadas, en la region región, por mes.",
+      "mujer": 2.0,
+      "hombre": null,
+      "total": 2.0
+    },
+    {
+      "indicador": "N° de madres menores de 15 años que dieron a luz en la región, por mes.",
+      "mujer": 6.0,
+      "hombre": 0.0,
+      "total": 6.0
+    },
+    {
+      "indicador": "N° de casos atendidos a los Centros de Salud Mental Comunitario por violencia en el marco de la Ley N° 30364.",
+      "mujer": 145.0,
+      "hombre": 36.0,
+      "total": 181.0
+    },
+    {
+      "indicador": "N° de kits de emergencia, diferenciando mínimo de completo, entregados a las víctimas de violencia sexual, por mes.",
+      "mujer": 37.0,
+      "hombre": 0.0,
+      "total": 37.0
+    },
+    {
+      "indicador": "N° de gestantes con detección positiva de violencia contra la mujer realizada en los establecimientos de salud del primer nivel de atención.",
+      "mujer": 374.0,
+      "hombre": 0.0,
+      "total": 374.0
+    },
+    {
+      "indicador": "N° de gestantes atendidas con detección positiva de violencia contra la mujer y valoración de riesgo realizadas en establecimientos de salud de categoría I3-I4.",
+      "mujer": 168.0,
+      "hombre": 0.0,
+      "total": 168.0
+    },
+    {
+      "indicador": "N° de gestantes con diagnóstico de violencia contra la mujer e inician tratamiento.",
+      "mujer": 168.0,
+      "hombre": 0.0,
+      "total": 168.0
+    },
+    {
+      "indicador": "N° de capacitaciones realizadas por temática relacionados a la Ley N° 30364 realizadas, identificando el tipo de participante.",
+      "mujer": null,
+      "hombre": null,
+      "total": 3.0
+    },
+    {
+      "indicador": "N° de Resoluciones que implementan los comites en el marco del prottocolo de accion conjunta en los establecimientos de salud y cem.",
+      "mujer": null,
+      "hombre": null,
+      "total": 6.0
+    }
+  ]
+}
