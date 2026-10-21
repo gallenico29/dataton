@@ -2,7 +2,7 @@
   "universo": "Alumnas 12-17, cuestionario CRS.04, SEXO=1. Departamento = de la IE, no de la casa.",
   "encuesta": "ENARES 2024",
   "cem": {
-    "archivo": "CEM Regulares (2025).geojson",
+    "archivo": "cem_regulares_2025.geojson",
     "n": 175,
     "tipo": "REGULAR",
     "periodo": "ENE-FEB 2025",
@@ -18,7 +18,8 @@
     "act_deje_colegio": "Actitud: deje el colegio",
     "falta_colegio": "Falta al colegio para ayudar"
   },
-  "fuentes_fuera": {
-    "inei_its": "INEI(Sheet1).csv parece conocimiento de ITS, sin anio ni territorio. No entra al perfil."
+  "vivienda": {
+    "fuente": "ENARES 2024, CRS.01 mujeres 18+ en vivienda",
+    "nota": "Describe el lugar. No se une a la alumna. El departamento es el del hogar."
   }
 }

@@ -1,170 +1,89 @@
 # dataton
 
-ENARES 2024 (INEI). Crudos y productos van **separados**. Los CSV/PDF de INEI no están en git (`datos_dev/`; `07_CRS01_CAP411.csv` pesa 113 MB).
-
-## Carpetas
+ENARES 2024. Perfiles de alumnas 12–17 (CRS.04) y contexto de vivienda por departamento (CRS.01, mujeres 18+). El tablero está en `web/`.
 
 ```
-datos_dev/                 crudos INEI (CSV + PDF). No se modifican.
-data/tablas/               productos: duckdb, parquet, csv de trabajo
-scripts/
-  rutas.py                 un solo mapa de rutas
-  tablas/                  creación de tablas
-  descriptivos/            inventarios y descriptivos → docs/descriptivos/
-  modelos/                 LASSO, k-medias, CART → docs/resultados/
-docs/
-  descriptivos/            cómo se ve la muestra
-  metodologia/             decisiones (universo, diseño, recodes)
-  resultados/              LASSO / k-medias / CART
-  img/                     figuras
+datos_dev/          crudos INEI (gitignored)
+data/               CEM fuente + tablas de trabajo (ver data/README.md)
+scripts/tablas/     duckdb, matriz, JSON del tablero
+scripts/modelos/    LASSO → k-medias → CART
+scripts/descriptivos/
+docs/               informes
+web/                tablero
 ```
 
-Índice de informes (qué es cada uno): [docs/README.md](docs/README.md).
+Índice de informes: [docs/README.md](docs/README.md).
 
-## Levantar el dashboard
+## Tablero
 
-Interfaz en `web/` (HTML + JS, sin npm). El servidor tiene que mandar UTF-8; si no, las ñ y tildes salen rotas.
+Es HTML/CSS/JS estático. No hace falta Railway.
 
-**1.** En una terminal, ve a la raíz del repo (`C:\dev\dataton` o donde hayas clonado). Tienes que ver `web\serve.py` y `web\index.html`.
-
-**2.** Comprueba que existan al menos estos archivos (si faltan, ve al paso 5):
-
-- `web/index.html`
-- `web/data/enares.json`
-- `web/data/departamentos.json`
-- `web/data/cem.geojson`
-- `web/data/peru_departamentos.geojson`
-- `web/data/perfiles.json`
-
-**3.** Arranca el servidor (déjalo corriendo; no cierres esa terminal):
+**Para mostrarlo a alguien ahora:** abre o manda `web/tablero.html`. Es el tablero entero en un solo archivo (necesita internet por el mapa). Si cambiaste datos o textos:
 
 ```bash
-python web/serve.py
+uv run python scripts/tablas/exportar_tablero.py
 ```
 
-Tiene que imprimir:
-
-```
-Dashboard en http://127.0.0.1:8765/
-```
-
-**4.** En el navegador abre exactamente esa URL: [http://127.0.0.1:8765/](http://127.0.0.1:8765/). Debes ver el mapa del Perú, filtros (violencia, edad, región) y el panel. Para parar: `Ctrl+C` en la terminal.
-
-No abras `web/index.html` con doble clic ni con `file://`: los módulos JS no cargan y las tildes se rompen. Tampoco uses `python -m http.server` (no pone `charset=utf-8`).
-
-Puerto ocupado o quieres otro: `python web/serve.py 8766` y abre `http://127.0.0.1:8766/`.
-
-**5.** Si el mapa sale vacío, “No se pudieron cargar los datos”, o no están los JSON del paso 2, regenera y vuelve a servir:
+**En tu máquina, con el repo:**
 
 ```bash
-python scripts/tablas/armar_dashboard.py
-python web/serve.py
+uv sync
+uv run python web/serve.py
 ```
 
-`armar_dashboard.py` pide `data/tablas/crs04_modelo.parquet` y los CEM/SALUD/MP en `data/`. Recetario: [paso 4](#4-dashboard-web).
+Abre [http://127.0.0.1:8765/](http://127.0.0.1:8765/). Otro puerto: `uv run python web/serve.py 8766`.
 
-| Qué | Dónde |
+**URL pública:** [https://gallenico29.github.io/dataton/](https://gallenico29.github.io/dataton/). GitHub Pages sirve `web/` (workflow en `.github/workflows/pages.yml`). Si el link da 404, en el repo: Settings → Pages → Source = GitHub Actions, y espera a que corra el workflow.
+
+Si faltan los JSON de `web/data/`:
+
+```bash
+uv run python scripts/tablas/armar_dashboard.py
+uv run python scripts/tablas/exportar_tablero.py
+uv run python web/serve.py
+```
+
+`armar_dashboard.py` pide `crs04_modelo.parquet`, `enares.duckdb` y `data/cem_regulares_2025.geojson`.
+
+## Recrear tablas e informes
+
+Los scripts pisan el archivo que escriben. Prefijo: `uv run python`.
+
+```bash
+uv run python scripts/tablas/build_db.py
+uv run python scripts/tablas/procesar_crs04.py
+uv run python scripts/tablas/armar_filtro_violencia.py
+
+uv run python scripts/modelos/lasso_crs04.py
+uv run python scripts/modelos/perfiles_kmeans_crs04.py
+uv run python scripts/modelos/perfiles_cart_crs04.py
+
+uv run python scripts/descriptivos/inventario_variables.py
+uv run python scripts/descriptivos/descriptivos_controles.py
+uv run python scripts/descriptivos/informe_muestral_predictores.py
+uv run python scripts/descriptivos/descriptivos_crs01.py
+uv run python scripts/descriptivos/generate_crs04_charts.py
+
+uv run python scripts/tablas/armar_dashboard.py
+uv run python scripts/tablas/exportar_tablero.py
+```
+
+| Script | Sale |
 | --- | --- |
-| Microdatos INEI | `datos_dev/` |
-| DuckDB analítico | `data/tablas/enares.duckdb` |
-| Matriz X + Y recodificada | `data/tablas/crs04_modelo.parquet` |
-| Filtro sí/no violencia (k-medias) | `data/tablas/crs04_filtro_violencia.parquet` |
-| Coeficientes LASSO (tabla de trabajo) | `data/tablas/lasso_crs04_coef.csv` |
-| Asignación de clusters | `data/tablas/perfiles_kmeans_asig.csv` |
+| `build_db.py` | `data/tablas/enares.duckdb` |
+| `procesar_crs04.py` | `crs04_modelo.parquet` |
+| `armar_filtro_violencia.py` | `crs04_filtro_violencia.parquet` (sí/no de las 3 Y) |
+| `lasso_crs04.py` | [lasso_crs04.md](docs/resultados/lasso_crs04.md) · `lasso_crs04_coef.csv` |
+| `perfiles_kmeans_crs04.py` | [perfiles_kmeans_crs04.md](docs/resultados/perfiles_kmeans_crs04.md) · `perfiles_kmeans_asig.csv` |
+| `perfiles_cart_crs04.py` | [perfiles_cart_crs04.md](docs/resultados/perfiles_cart_crs04.md) |
+| `inventario_variables.py` | `inventario_crs04.md` / `inventario_crs01.md` |
+| `descriptivos_controles.py` | `descriptivos_controles.md` |
+| `informe_muestral_predictores.py` | `diseno_muestral.md` · `descriptivos_predictores_crs04.md` |
+| `descriptivos_crs01.py` | `descriptivos_crs01_vs_crs04.md` |
+| `generate_crs04_charts.py` | `docs/img/crs04_*.svg` |
+| `armar_dashboard.py` | `web/data/` |
+| `exportar_tablero.py` | `web/tablero.html` (un archivo, para mandar) |
 
-Los CSV en `data/tablas/` no son informes: son la misma tabla para Excel o para que el siguiente script la lea.
+A mano (no los pisa ningún script): [metodologia.md](docs/metodologia/metodologia.md) y [violencia_crs04_si_no_missing.md](docs/descriptivos/violencia_crs04_si_no_missing.md).
 
-El k-medias **no** arma el sí/no al vuelo: lee la tabla de filtro.
-
----
-
-## Cómo crear todo de nuevo
-
-Hace falta `datos_dev/` (crudos INEI) y Python. Desde la raíz del repo.
-
-```bash
-pip install -r requirements.txt
-```
-
-### 1. Tablas (`data/tablas/`)
-
-En este orden. Cada uno **pisa** el archivo que escribe.
-
-```bash
-python scripts/tablas/build_db.py
-python scripts/tablas/procesar_crs04.py
-python scripts/tablas/armar_filtro_violencia.py
-```
-
-| Comando | Sale |
-| --- | --- |
-| `build_db.py` | `data/tablas/enares.duckdb` (crudos → tablas analíticas) |
-| `procesar_crs04.py` | `crs04_modelo.parquet` (+ `.csv`) — X e Y recodificadas |
-| `armar_filtro_violencia.py` | `crs04_filtro_violencia.parquet` (+ `.csv`) — sí/no de las 3 Y + alguna |
-
-Si solo cambiaste un recode: `procesar_crs04.py` y después el filtro. El duckdb solo si cambió un crudo.
-
-### 2. Informes de resultados (`docs/resultados/`)
-
-Necesitan las tablas del paso 1. El LASSO primero: k-medias y CART leen `lasso_crs04_coef.csv`.
-
-```bash
-python scripts/modelos/lasso_crs04.py
-python scripts/modelos/perfiles_kmeans_crs04.py
-python scripts/modelos/perfiles_cart_crs04.py
-```
-
-| Comando | Sale |
-| --- | --- |
-| `lasso_crs04.py` | [docs/resultados/lasso_crs04.md](docs/resultados/lasso_crs04.md) y `data/tablas/lasso_crs04_coef.csv` |
-| `perfiles_kmeans_crs04.py` | [docs/resultados/perfiles_kmeans_crs04.md](docs/resultados/perfiles_kmeans_crs04.md), figuras `docs/img/perfiles_*`, `perfiles_kmeans_asig.csv` |
-| `perfiles_cart_crs04.py` | [docs/resultados/perfiles_cart_crs04.md](docs/resultados/perfiles_cart_crs04.md) y `docs/img/cart_*` |
-
-Si solo quieres rehacer CART, basta el LASSO ya corrido. Si cambiaste la matriz, vuelve a correr los tres.
-
-### 3. Informes descriptivos y de diseño
-
-Necesitan el duckdb del paso 1. No necesitan el LASSO. Cada `.py` **escribe** el `.md` (no son Rmd). Detalle: [scripts/descriptivos/README.md](scripts/descriptivos/README.md).
-
-```bash
-python scripts/descriptivos/inventario_variables.py
-python scripts/descriptivos/descriptivos_controles.py
-python scripts/descriptivos/informe_muestral_predictores.py
-python scripts/descriptivos/descriptivos_crs01.py
-python scripts/descriptivos/generate_crs04_charts.py
-```
-
-| Comando | Sale |
-| --- | --- |
-| `inventario_variables.py` | `docs/descriptivos/inventario_crs04.md` y `inventario_crs01.md` · CSV en `data/tablas/` |
-| `descriptivos_controles.py` | `docs/descriptivos/descriptivos_controles.md` y `docs/img/controles_*` |
-| `informe_muestral_predictores.py` | `docs/metodologia/diseno_muestral.md` y `docs/descriptivos/descriptivos_predictores_crs04.md` |
-| `descriptivos_crs01.py` | `docs/descriptivos/descriptivos_crs01_vs_crs04.md` |
-| `generate_crs04_charts.py` | solo figuras `docs/img/crs04_*.svg` (el texto del doc de violencia es a mano) |
-
-### 4. Dashboard (`web/`)
-
-Solo ver la app (JSON ya listos): [Levantar el dashboard](#levantar-el-dashboard).
-
-Necesita el JSON de `scripts/tablas/armar_dashboard.py` (y por tanto `crs04_modelo.parquet` + los CSV/GeoJSON en `data/`).
-
-```bash
-python scripts/tablas/armar_dashboard.py
-python web/serve.py
-```
-
-Abre http://127.0.0.1:8765/ — módulos en `web/js/`. Usa `web/serve.py` (manda UTF-8) y no abras el HTML como `file://`.
-
-| Comando | Sale |
-| --- | --- |
-| `armar_dashboard.py` | `web/data/` (ENARES por dpto, CEM, SALUD, MP) |
-| servidor HTTP | interfaz en el navegador |
-
-### Qué no sale de un script
-
-Estos se editan a mano. Correr Python **no** los regenera:
-
-- [docs/metodologia/metodologia.md](docs/metodologia/metodologia.md)
-- [docs/metodologia/viabilidad_desfases.md](docs/metodologia/viabilidad_desfases.md)
-- [docs/descriptivos/violencia_por_cuestionario.md](docs/descriptivos/violencia_por_cuestionario.md)
-- [docs/descriptivos/violencia_crs04_si_no_missing.md](docs/descriptivos/violencia_crs04_si_no_missing.md) (el texto; las SVG sí las hace `generate_crs04_charts.py`)
+Si cambió un recode: `procesar_crs04.py` → filtro → LASSO → k-medias / CART. El duckdb solo si cambió un crudo.

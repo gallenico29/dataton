@@ -6,7 +6,7 @@
       {
         "id": "alguna_si-1",
         "titulo": "Actitudes de castigo y trabajo, casa en tensión",
-        "texto": "Más aceptación de que los padres golpeen (66 %) y de que ella deba trabajar (59 %). Más peleas en casa y quedarse sola. Un poco más joven (13,9 años). Superpone más física y sexual que los otros dos tipos.",
+        "texto": "Más aceptación de que los padres golpeen (66 %) y de que ella deba trabajar (59 %). Más peleas en casa y quedarse sola. Un poco más joven (13,9 años). También reportan más violencia física y sexual que los otros dos grupos.",
         "tags": [
           "Actitudes",
           "Hogar",
@@ -23,10 +23,10 @@
       {
         "id": "alguna_si-2",
         "titulo": "Colegio de mujeres",
-        "texto": "El algoritmo apartó casi solo el tipo de IE: 100 % colegio de mujeres. n=603, el más chico de este filtro. No lo leas como un tipo de casa.",
+        "texto": "Casi todas estudian en un colegio de mujeres. El algoritmo las juntó por el tipo de escuela, no porque se parezcan en la casa. Es el grupo más chico: no armes política solo con esto.",
         "tags": [
           "Escuela",
-          "IE mujeres"
+          "Colegio de mujeres"
         ],
         "n": 603,
         "N": 84089,
@@ -39,7 +39,7 @@
       {
         "id": "alguna_si-3",
         "titulo": "Más escucha, menos carga de actitudes",
-        "texto": "El grupo más grande (N ~ 560 mil). Más a menudo la toman en cuenta (95 %); mucho menos ‘debe trabajar’ (8 %) y ‘padres pueden golpear’ (22 %).",
+        "texto": "El grupo más grande. Más a menudo la toman en cuenta (95 %); mucho menos ‘debe trabajar’ (8 %) y ‘padres pueden golpear’ (22 %).",
         "tags": [
           "Hogar",
           "Participación"
@@ -57,7 +57,7 @@
       {
         "id": "psic_si-1",
         "titulo": "Vive con tío",
-        "texto": "Corte flaco: 100 % vive con tío. n=562. No es un perfil mixto de hogar; el algoritmo encontró esa sola pregunta.",
+        "texto": "Casi todas viven con un tío. Las junta esa sola pregunta, no un perfil de hogar más amplio.",
         "tags": [
           "Hogar",
           "Composición"
@@ -73,7 +73,7 @@
       {
         "id": "psic_si-2",
         "titulo": "Actitud: padres pueden golpear",
-        "texto": "Casi todas (99,7 %) aceptan que los padres tienen derecho a golpear. Más ‘debe trabajar’ que el tipo grande. Superpone física 48 %.",
+        "texto": "Casi todas (99,7 %) aceptan que los padres tienen derecho a golpear. Más ‘debe trabajar’ que el tipo grande. También reportan más violencia física (48 %).",
         "tags": [
           "Actitudes",
           "Castigo"
@@ -89,7 +89,7 @@
       {
         "id": "psic_si-3",
         "titulo": "Sin esa justificación de castigo",
-        "texto": "El más grande. 0 % en ‘padres tienen derecho a golpear’. Menos física superpuesta (32 %).",
+        "texto": "El más grande. 0 % en ‘padres tienen derecho a golpear’. Menos violencia física junto con la psicológica (32 %).",
         "tags": [
           "Actitudes",
           "Hogar"
@@ -107,7 +107,7 @@
       {
         "id": "fis_si-1",
         "titulo": "Vive con tío",
-        "texto": "Corte flaco: 100 % vive con tío. n=276, cajón chico. Un poco más joven y más sexual superpuesta (45 %).",
+        "texto": "Casi todas viven con un tío. Grupo pequeño. Un poco más joven y más violencia sexual junto con la física (45 %).",
         "tags": [
           "Hogar",
           "Composición"
@@ -139,7 +139,7 @@
       {
         "id": "fis_si-3",
         "titulo": "Sin esa presión de trabajo",
-        "texto": "El más grande. 0 % en ‘debe trabajar si falta plata’. La física ya es 100 % por el filtro; aquí cambia la superposición.",
+        "texto": "El más grande. 0 % en ‘debe trabajar si falta plata’. Todas ya reportaron violencia física; aquí cambia qué más se junta.",
         "tags": [
           "Actitudes",
           "Hogar"
@@ -157,7 +157,7 @@
       {
         "id": "sex_si-1",
         "titulo": "Actitud: debe trabajar si falta plata",
-        "texto": "Casi 100 % acepta que debe trabajar si falta plata. Más ‘padres pueden golpear’ (55 %) y un poco más física superpuesta.",
+        "texto": "Casi 100 % acepta que debe trabajar si falta plata. Más ‘padres pueden golpear’ (55 %) y un poco más violencia física junto con la sexual.",
         "tags": [
           "Actitudes",
           "Trabajo"
@@ -173,7 +173,7 @@
       {
         "id": "sex_si-2",
         "titulo": "Sin esa presión de trabajo",
-        "texto": "El grupo más grande. 0 % en ‘debe trabajar’. La sexual ya es 100 % por el filtro.",
+        "texto": "El grupo más grande. 0 % en ‘debe trabajar’. Todas en este grupo ya reportaron violencia sexual.",
         "tags": [
           "Actitudes",
           "Hogar"
@@ -188,11 +188,11 @@
       },
       {
         "id": "sex_si-3",
-        "titulo": "Colegio de mujeres (n chico)",
-        "texto": "100 % IE de mujeres. n=177: cajón chico, no sirve para armar política. El algoritmo encontró el colegio de señoritas, no un tipo de casa.",
+        "titulo": "Colegio de mujeres (grupo pequeño)",
+        "texto": "100 % colegio de mujeres. Grupo pequeño: no sirve para armar política.",
         "tags": [
           "Escuela",
-          "IE mujeres"
+          "Colegio de mujeres"
         ],
         "n": 177,
         "N": 25417,

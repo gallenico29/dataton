@@ -1,4 +1,4 @@
-import { DATA_BASE, PERU, isNational, pct, slugDepto, yKey } from "./config.js";
+import { CACHE, DATA_BASE, PERU, isNational, pct, slugDepto, yKey } from "./config.js";
 import { getState, setState } from "./state.js";
 
 let map;
@@ -83,12 +83,17 @@ export async function initMap(departamentos, enares) {
 
   hoverTip = L.tooltip({ sticky: true, className: "map-tip", opacity: 1 });
 
-  const [deptoRes, cemRes] = await Promise.all([
-    fetch(new URL("peru_departamentos.geojson", DATA_BASE)),
-    fetch(new URL("cem.geojson", DATA_BASE)),
-  ]);
-  const deptoGeo = await deptoRes.json();
-  geo = await cemRes.json();
+  const packed = globalThis.__DASHBOARD__;
+  let deptoGeo = packed?.geo_deptos;
+  geo = packed?.geo_cem;
+  if (!deptoGeo || !geo) {
+    const [deptoRes, cemRes] = await Promise.all([
+      fetch(new URL(`peru_departamentos.geojson?v=${CACHE}`, DATA_BASE)),
+      fetch(new URL(`cem.geojson?v=${CACHE}`, DATA_BASE)),
+    ]);
+    deptoGeo = await deptoRes.json();
+    geo = await cemRes.json();
+  }
 
   deptoLayer = L.geoJSON(deptoGeo, {
     pane: "deptos",

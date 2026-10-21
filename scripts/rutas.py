@@ -1,11 +1,9 @@
-"""Rutas del repo. Un solo lugar: crudos vs tablas vs informes.
+"""Rutas del repo.
 
-datos_dev/              crudos INEI (CSV/PDF, no se tocan)
-data/tablas/            productos (duckdb, parquet, csv de trabajo)
-docs/descriptivos/      cómo se ve la muestra y el diccionario
-docs/metodologia/       decisiones (universo, diseño, recodes)
-docs/resultados/        lo que salió de LASSO / k-medias / CART
-docs/img/               figuras de todos los informes
+datos_dev/          crudos INEI
+data/               CEM fuente + tablas de trabajo
+docs/               informes
+web/data/           JSON del tablero
 """
 
 from __future__ import annotations
@@ -19,6 +17,7 @@ TABLAS = ROOT / "data" / "tablas"
 
 WEB = ROOT / "web"
 WEB_DATA = WEB / "data"
+TABLERO = WEB / "tablero.html"
 
 DOCS = ROOT / "docs"
 DOC_DESC = DOCS / "descriptivos"
@@ -29,14 +28,12 @@ IMG_MD = "../img"
 
 DB = TABLAS / "enares.duckdb"
 
+CEM_GEO = ROOT / "data" / "cem_regulares_2025.geojson"
+
 CRS04_MODELO = TABLAS / "crs04_modelo.parquet"
-CRS04_MODELO_CSV = TABLAS / "crs04_modelo.csv"
 CRS04_FILTRO = TABLAS / "crs04_filtro_violencia.parquet"
-CRS04_FILTRO_CSV = TABLAS / "crs04_filtro_violencia.csv"
 KMEANS_ASIG = TABLAS / "perfiles_kmeans_asig.csv"
 LASSO_COEF = TABLAS / "lasso_crs04_coef.csv"
-INV_CRS04_CSV = TABLAS / "inventario_crs04.csv"
-INV_CRS01_CSV = TABLAS / "inventario_crs01.csv"
 
 
 def asegurar_tablas() -> Path:
@@ -49,17 +46,7 @@ def asegurar_docs() -> None:
         p.mkdir(parents=True, exist_ok=True)
 
 
-def ficha(*, que_es: str, que_no: str, tipo: str, script: str | None = None) -> str:
-    """Recuadro al inicio de cada informe: para qué sirve y qué no es."""
-    lineas = [
-        f"> **Qué es este informe.** {que_es}",
-        f"> **Qué no es.** {que_no}",
-        f"> **Tipo.** {tipo}.",
-    ]
+def ficha(texto: str, script: str | None = None) -> str:
     if script:
-        lineas.append(
-            f"> **Lo escribe.** `{script}` (Python → markdown; no es Rmd)."
-        )
-    else:
-        lineas.append("> **Lo escribe.** Texto a mano (no sale de un script).")
-    return "\n".join(lineas) + "\n\n"
+        return f"> {texto} (`{script}`)\n\n"
+    return f"> {texto}\n\n"

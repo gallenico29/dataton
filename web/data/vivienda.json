@@ -1,0 +1,502 @@
+{
+  "fuente": "ENARES 2024, CRS.01 mujeres 18+ en vivienda",
+  "peso": "FACTOR_MUJ",
+  "y": "Alguna violencia fisica o sexual de pareja (actual, ultima o noviazgo), alguna vez",
+  "nota": "Describe el lugar. No se une a la alumna. El departamento es el del hogar.",
+  "nacional": {
+    "n": 13826,
+    "N": 12401665.0,
+    "n_y": 4215,
+    "todas": {
+      "elec": 0.9712,
+      "agua": 0.8259,
+      "desague": 0.7869,
+      "internet": 0.7249,
+      "urbano": 0.8777
+    },
+    "con_violencia": {
+      "elec": 0.9605,
+      "agua": 0.7958,
+      "desague": 0.7428,
+      "internet": 0.6865,
+      "urbano": 0.8436
+    }
+  },
+  "por": {
+    "ica": {
+      "n": 529,
+      "N": 367554.0,
+      "n_y": 94,
+      "todas": {
+        "elec": 0.9684,
+        "agua": 0.8416,
+        "desague": 0.8232,
+        "internet": 0.7377,
+        "urbano": 0.947
+      },
+      "con_violencia": {
+        "elec": 0.9417,
+        "agua": 0.7463,
+        "desague": 0.728,
+        "internet": 0.7013,
+        "urbano": 0.9278
+      }
+    },
+    "moquegua": {
+      "n": 361,
+      "N": 70885.0,
+      "n_y": 125,
+      "todas": {
+        "elec": 0.9935,
+        "agua": 0.9161,
+        "desague": 0.9102,
+        "internet": 0.7907,
+        "urbano": 0.8643
+      },
+      "con_violencia": {
+        "elec": 0.9915,
+        "agua": 0.8907,
+        "desague": 0.8878,
+        "internet": 0.7195,
+        "urbano": 0.8575
+      }
+    },
+    "cajamarca": {
+      "n": 612,
+      "N": 482479.0,
+      "n_y": 131,
+      "todas": {
+        "elec": 0.9677,
+        "agua": 0.666,
+        "desague": 0.5888,
+        "internet": 0.4333,
+        "urbano": 0.5513
+      },
+      "con_violencia": {
+        "elec": 0.9712,
+        "agua": 0.7141,
+        "desague": 0.6296,
+        "internet": 0.381,
+        "urbano": 0.619
+      }
+    },
+    "loreto": {
+      "n": 480,
+      "N": 309817.0,
+      "n_y": 143,
+      "todas": {
+        "elec": 0.9062,
+        "agua": 0.541,
+        "desague": 0.3922,
+        "internet": 0.7035,
+        "urbano": 0.7902
+      },
+      "con_violencia": {
+        "elec": 0.8986,
+        "agua": 0.5054,
+        "desague": 0.3161,
+        "internet": 0.6647,
+        "urbano": 0.7483
+      }
+    },
+    "callao": {
+      "n": 441,
+      "N": 469008.0,
+      "n_y": 113,
+      "todas": {
+        "elec": 0.9943,
+        "agua": 0.8901,
+        "desague": 0.9317,
+        "internet": 0.8027,
+        "urbano": 1.0
+      },
+      "con_violencia": {
+        "elec": 1.0,
+        "agua": 0.8938,
+        "desague": 0.9212,
+        "internet": 0.7405,
+        "urbano": 1.0
+      }
+    },
+    "madre_de_dios": {
+      "n": 405,
+      "N": 60082.0,
+      "n_y": 130,
+      "todas": {
+        "elec": 0.9372,
+        "agua": 0.8393,
+        "desague": 0.5227,
+        "internet": 0.6449,
+        "urbano": 0.8435
+      },
+      "con_violencia": {
+        "elec": 0.9371,
+        "agua": 0.8298,
+        "desague": 0.5271,
+        "internet": 0.5829,
+        "urbano": 0.8319
+      }
+    },
+    "la_libertad": {
+      "n": 620,
+      "N": 762453.0,
+      "n_y": 120,
+      "todas": {
+        "elec": 0.9752,
+        "agua": 0.9034,
+        "desague": 0.8791,
+        "internet": 0.5619,
+        "urbano": 0.895
+      },
+      "con_violencia": {
+        "elec": 0.9831,
+        "agua": 0.8959,
+        "desague": 0.8924,
+        "internet": 0.4429,
+        "urbano": 0.9175
+      }
+    },
+    "arequipa": {
+      "n": 657,
+      "N": 609306.0,
+      "n_y": 240,
+      "todas": {
+        "elec": 0.9746,
+        "agua": 0.7622,
+        "desague": 0.7171,
+        "internet": 0.8967,
+        "urbano": 0.9273
+      },
+      "con_violencia": {
+        "elec": 0.9607,
+        "agua": 0.7255,
+        "desague": 0.6872,
+        "internet": 0.8773,
+        "urbano": 0.8833
+      }
+    },
+    "apurimac": {
+      "n": 471,
+      "N": 136527.0,
+      "n_y": 255,
+      "todas": {
+        "elec": 0.9536,
+        "agua": 0.9111,
+        "desague": 0.7564,
+        "internet": 0.5788,
+        "urbano": 0.5941
+      },
+      "con_violencia": {
+        "elec": 0.9222,
+        "agua": 0.9347,
+        "desague": 0.6686,
+        "internet": 0.5021,
+        "urbano": 0.4622
+      }
+    },
+    "ayacucho": {
+      "n": 545,
+      "N": 212476.0,
+      "n_y": 209,
+      "todas": {
+        "elec": 0.9637,
+        "agua": 0.8695,
+        "desague": 0.7456,
+        "internet": 0.749,
+        "urbano": 0.6524
+      },
+      "con_violencia": {
+        "elec": 0.9411,
+        "agua": 0.8628,
+        "desague": 0.7242,
+        "internet": 0.6968,
+        "urbano": 0.6003
+      }
+    },
+    "huancavelica": {
+      "n": 488,
+      "N": 102649.0,
+      "n_y": 178,
+      "todas": {
+        "elec": 0.9217,
+        "agua": 0.8008,
+        "desague": 0.5867,
+        "internet": 0.466,
+        "urbano": 0.4413
+      },
+      "con_violencia": {
+        "elec": 0.8973,
+        "agua": 0.8315,
+        "desague": 0.5349,
+        "internet": 0.4002,
+        "urbano": 0.3477
+      }
+    },
+    "pasco": {
+      "n": 456,
+      "N": 87026.0,
+      "n_y": 151,
+      "todas": {
+        "elec": 0.9446,
+        "agua": 0.6527,
+        "desague": 0.6987,
+        "internet": 0.4444,
+        "urbano": 0.7515
+      },
+      "con_violencia": {
+        "elec": 0.9011,
+        "agua": 0.5567,
+        "desague": 0.6523,
+        "internet": 0.3953,
+        "urbano": 0.6771
+      }
+    },
+    "ucayali": {
+      "n": 456,
+      "N": 194600.0,
+      "n_y": 130,
+      "todas": {
+        "elec": 0.9278,
+        "agua": 0.7502,
+        "desague": 0.4231,
+        "internet": 0.6314,
+        "urbano": 0.8816
+      },
+      "con_violencia": {
+        "elec": 0.9375,
+        "agua": 0.7115,
+        "desague": 0.4016,
+        "internet": 0.6089,
+        "urbano": 0.8587
+      }
+    },
+    "huanuco": {
+      "n": 492,
+      "N": 240921.0,
+      "n_y": 138,
+      "todas": {
+        "elec": 0.925,
+        "agua": 0.597,
+        "desague": 0.5659,
+        "internet": 0.5278,
+        "urbano": 0.6288
+      },
+      "con_violencia": {
+        "elec": 0.941,
+        "agua": 0.5658,
+        "desague": 0.5479,
+        "internet": 0.4971,
+        "urbano": 0.6452
+      }
+    },
+    "tumbes": {
+      "n": 420,
+      "N": 86690.0,
+      "n_y": 114,
+      "todas": {
+        "elec": 0.99,
+        "agua": 0.7292,
+        "desague": 0.7523,
+        "internet": 0.716,
+        "urbano": 0.967
+      },
+      "con_violencia": {
+        "elec": 1.0,
+        "agua": 0.7671,
+        "desague": 0.8149,
+        "internet": 0.6285,
+        "urbano": 0.992
+      }
+    },
+    "lambayeque": {
+      "n": 550,
+      "N": 500741.0,
+      "n_y": 129,
+      "todas": {
+        "elec": 0.9825,
+        "agua": 0.8757,
+        "desague": 0.8581,
+        "internet": 0.7012,
+        "urbano": 0.9397
+      },
+      "con_violencia": {
+        "elec": 0.9825,
+        "agua": 0.8156,
+        "desague": 0.8148,
+        "internet": 0.5715,
+        "urbano": 0.9364
+      }
+    },
+    "lima": {
+      "n": 1424,
+      "N": 4594705.0,
+      "n_y": 383,
+      "todas": {
+        "elec": 0.9879,
+        "agua": 0.8748,
+        "desague": 0.8971,
+        "internet": 0.8242,
+        "urbano": 0.9887
+      },
+      "con_violencia": {
+        "elec": 0.9772,
+        "agua": 0.8337,
+        "desague": 0.8592,
+        "internet": 0.806,
+        "urbano": 0.9816
+      }
+    },
+    "junin": {
+      "n": 618,
+      "N": 471510.0,
+      "n_y": 220,
+      "todas": {
+        "elec": 0.9501,
+        "agua": 0.8466,
+        "desague": 0.7753,
+        "internet": 0.7673,
+        "urbano": 0.7933
+      },
+      "con_violencia": {
+        "elec": 0.9691,
+        "agua": 0.8437,
+        "desague": 0.7713,
+        "internet": 0.7922,
+        "urbano": 0.7739
+      }
+    },
+    "puno": {
+      "n": 662,
+      "N": 426197.0,
+      "n_y": 305,
+      "todas": {
+        "elec": 0.9061,
+        "agua": 0.6542,
+        "desague": 0.5775,
+        "internet": 0.529,
+        "urbano": 0.683
+      },
+      "con_violencia": {
+        "elec": 0.8836,
+        "agua": 0.5902,
+        "desague": 0.4779,
+        "internet": 0.4282,
+        "urbano": 0.5637
+      }
+    },
+    "san_martin": {
+      "n": 507,
+      "N": 292968.0,
+      "n_y": 139,
+      "todas": {
+        "elec": 0.9609,
+        "agua": 0.8299,
+        "desague": 0.5579,
+        "internet": 0.6417,
+        "urbano": 0.7948
+      },
+      "con_violencia": {
+        "elec": 0.9723,
+        "agua": 0.8463,
+        "desague": 0.5728,
+        "internet": 0.6646,
+        "urbano": 0.8466
+      }
+    },
+    "tacna": {
+      "n": 402,
+      "N": 149632.0,
+      "n_y": 123,
+      "todas": {
+        "elec": 0.9618,
+        "agua": 0.8805,
+        "desague": 0.8078,
+        "internet": 0.8494,
+        "urbano": 0.9321
+      },
+      "con_violencia": {
+        "elec": 0.9653,
+        "agua": 0.85,
+        "desague": 0.7893,
+        "internet": 0.7864,
+        "urbano": 0.9628
+      }
+    },
+    "amazonas": {
+      "n": 455,
+      "N": 132128.0,
+      "n_y": 127,
+      "todas": {
+        "elec": 0.8908,
+        "agua": 0.8889,
+        "desague": 0.6747,
+        "internet": 0.4923,
+        "urbano": 0.5444
+      },
+      "con_violencia": {
+        "elec": 0.8617,
+        "agua": 0.8605,
+        "desague": 0.6163,
+        "internet": 0.4142,
+        "urbano": 0.4504
+      }
+    },
+    "piura": {
+      "n": 638,
+      "N": 752310.0,
+      "n_y": 100,
+      "todas": {
+        "elec": 0.9872,
+        "agua": 0.7675,
+        "desague": 0.6779,
+        "internet": 0.6104,
+        "urbano": 0.9031
+      },
+      "con_violencia": {
+        "elec": 0.9928,
+        "agua": 0.7477,
+        "desague": 0.606,
+        "internet": 0.6338,
+        "urbano": 0.917
+      }
+    },
+    "ancash": {
+      "n": 582,
+      "N": 416414.0,
+      "n_y": 175,
+      "todas": {
+        "elec": 0.9723,
+        "agua": 0.8613,
+        "desague": 0.784,
+        "internet": 0.7865,
+        "urbano": 0.735
+      },
+      "con_violencia": {
+        "elec": 0.9474,
+        "agua": 0.8422,
+        "desague": 0.7678,
+        "internet": 0.7088,
+        "urbano": 0.6792
+      }
+    },
+    "cusco": {
+      "n": 555,
+      "N": 472587.0,
+      "n_y": 243,
+      "todas": {
+        "elec": 0.9587,
+        "agua": 0.8309,
+        "desague": 0.7851,
+        "internet": 0.6719,
+        "urbano": 0.7444
+      },
+      "con_violencia": {
+        "elec": 0.9444,
+        "agua": 0.8426,
+        "desague": 0.7125,
+        "internet": 0.5648,
+        "urbano": 0.6665
+      }
+    }
+  }
+}
