@@ -1,11 +1,8 @@
 # Inventario CRS01 (mujeres 18+)
 
-> **Qué es este informe.** Diccionario corto de las preguntas CRS01 (mujeres 18+ en vivienda), satélites incluidos.
-> **Qué no es.** No se une a la alumna. No es el comparativo CRS01 vs CRS04 (eso es [descriptivos_crs01_vs_crs04.md](descriptivos_crs01_vs_crs04.md)).
-> **Tipo.** Descriptivo.
-> **Lo escribe.** `scripts/descriptivos/inventario_variables.py` (Python → markdown; no es Rmd).
+> Preguntas CRS01 (mujeres 18+ en vivienda), satélites incluidos. (`scripts/descriptivos/inventario_variables.py`)
 
-Sí: CRS01 es el cuestionario de **mujeres de 18 y más** en vivienda. Tabla ancha `analisis.crs01_mujeres` más satélites CAP402, CAP405 y CAP411. Una fila = una pregunta; las baterías (p. ej. `C1P110_1`–`_20`, `C1P411_1`–`_N`) están colapsadas. Etiquetas: diccionarios PDF. La misma lista en CSV está en `data/tablas/inventario_crs01.csv`. No es otro informe.
+CRS01 es el cuestionario de **mujeres de 18 y más** en vivienda. Tabla ancha `analisis.crs01_mujeres` más satélites CAP402, CAP405 y CAP411. Una fila = una pregunta; las baterías (p. ej. `C1P110_1`–`_20`, `C1P411_1`–`_N`) están colapsadas. Etiquetas: diccionarios PDF.
 
 Filas en el recorte: **13,826**. Columnas crudas: **5,591**. Preguntas (filas de este inventario, baterías agrupadas): **269**.
 

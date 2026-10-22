@@ -1,13 +1,10 @@
 # Violencia CRS04: sí / no y missing
 
-> **Qué es este informe.** Cómo se construyen las 3 Y (psicológica, física, sexual a 12 meses) y cómo se trata el missing / skip. Tablas de prevalencia ponderada.
-> **Qué no es.** No es el catálogo de ítems de todos los cuestionarios. No es un modelo. La definición corta está también en metodologia.md §3.
-> **Tipo.** Descriptivo.
-> **Lo escribe.** Texto a mano; las figuras las escribe `scripts/descriptivos/generate_crs04_charts.py`.
+> Cómo se construyen las 3 Y (psicológica, física, sexual a 12 meses) y cómo se trata el missing / skip. Figuras: `scripts/descriptivos/generate_crs04_charts.py`.
 
 Solo mujeres (`SEXO = 1`) · n muestra = 9,608 · N expandida = 1,419,491 con `FACTOR_ALUMNOS` · se excluyen 9,199 hombres · 12–17 años · ENARES 2024.
 
-Tabla: `analisis.crs04_adolescentes`. Catálogo de ítems: [violencia_por_cuestionario.md](violencia_por_cuestionario.md).
+Tabla: `analisis.crs04_adolescentes`. Ítems: [inventario_crs04.md](inventario_crs04.md). Definición corta: [metodologia.md](../metodologia/metodologia.md).
 
 ![Prevalencia 12 meses ponderada](../img/crs04_kpis.svg)
 

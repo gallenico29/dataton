@@ -4,8 +4,8 @@ Un modelo por target. Peso = FACTOR_ALUMNOS. Estándar: edad y pers.
 Sigue docs/metodologia/metodologia.md: sin circulares, sin DEPARTAMENTO en X.
 
 Uso:
-    python scripts/tablas/procesar_crs04.py
-    python scripts/modelos/lasso_crs04.py
+    uv run python scripts/tablas/procesar_crs04.py
+    uv run python scripts/modelos/lasso_crs04.py
 
 Escribe docs/resultados/lasso_crs04.md y data/tablas/lasso_crs04_coef.csv.
 """
@@ -91,7 +91,7 @@ X_COLS = CONTINUAS + BINARIAS + DUMMIES
 
 def load() -> pd.DataFrame:
     if not SRC.exists():
-        raise FileNotFoundError(f"Falta {SRC}. Corre: python scripts/tablas/procesar_crs04.py")
+        raise FileNotFoundError(f"Falta {SRC}. Corre: uv run python scripts/tablas/procesar_crs04.py")
     df = pd.read_parquet(SRC)
     # CAR: no imputar el flujo de casa como 0
     return df.loc[df["car"] != 1].copy()
@@ -205,25 +205,6 @@ def fmt_or(coef: float) -> str:
     return f"{float(np.exp(coef)):.3f}"
 
 
-def unidad(var: str) -> str:
-    if var in CONTINUAS:
-        return "por 1 DE"
-    if var.startswith("etnia_"):
-        return "vs mestiza"
-    if var.startswith("idioma_"):
-        return "vs castellano"
-    if var.startswith("cuidador_"):
-        return "vs madre"
-    return "si = 1 vs 0"
-
-
-def lectura(var: str, coef: float) -> str:
-    if abs(coef) < EPS:
-        return "no queda: el L1 deja efecto 0 dado el resto"
-    sentido = "más" if coef > 0 else "menos"
-    return f"queda: {sentido} odds de esta violencia ({unidad(var)})"
-
-
 def selection_table(all_coef: pd.DataFrame) -> str:
     wide = all_coef.pivot(index="variable", columns="target", values="coef")
     wide = wide.reindex(X_COLS)
@@ -249,17 +230,17 @@ def md_table(tab: pd.DataFrame) -> str:
     tab = tab.sort_values(["queda", "_abs"], ascending=[False, False])
     n_ok = int(tab["queda"].sum())
     lines = [
-        "| Variable | Qué es | Coef. (logit) | OR | Lectura |",
-        "| --- | --- | ---: | ---: | --- |",
+        "| Variable | Qué es | Coef. (logit) | OR |",
+        "| --- | --- | ---: | ---: |",
     ]
     for _, row in tab.iterrows():
         var = row["variable"]
         c = float(row["coef"])
         lines.append(
-            f"| `{var}` | {LABELS.get(var, var)} | {fmt_coef(c)} | {fmt_or(c)} | {lectura(var, c)} |"
+            f"| `{var}` | {LABELS.get(var, var)} | {fmt_coef(c)} | {fmt_or(c)} |"
         )
     lines.append("")
-    lines.append(f"Quedan **{n_ok}**. No quedan **{len(tab) - n_ok}** (el L1 las apagó).")
+    lines.append(f"Distintas de cero: {n_ok} de {len(tab)}.")
     return "\n".join(lines)
 
 
@@ -284,14 +265,14 @@ def main() -> None:
     all_coef.loc[all_coef["coef"].abs() < EPS, "or"] = 1.0
     asegurar_docs()
     COEF.parent.mkdir(parents=True, exist_ok=True)
-    all_coef.to_csv(COEF, index=False)
+    with COEF.open("w", encoding="utf-8", newline="") as fh:
+        fh.write("# Coeficientes LASSO CRS04. Lo leen k-medias y CART.\n")
+        all_coef.to_csv(fh, index=False)
 
     md = f"""# LASSO CRS04 (alumnas)
 
 {ficha(
-    que_es="Qué variables quedaron vivas y con qué coeficiente (logit, OR, lectura) en cada violencia a 12 meses. Es el primer resultado del modelo: la selección de X.",
-    que_no="No es un descriptivo. No arma tipos de alumna (k-medias) ni reglas (CART). Esas X se usan después.",
-    tipo="Resultado del modelo",
+    "Coeficiente y OR del L1 en cada violencia a 12 meses.",
     script="scripts/modelos/lasso_crs04.py",
 )}
 Logístico L1 (`sklearn.linear_model.LogisticRegressionCV`, `penalty='l1'`, 5-fold, `roc_auc`).
@@ -301,26 +282,17 @@ Referencias de dummy: etnia = mestiza, idioma = castellano, cuidador = madre.
 Universo: `data/tablas/crs04_modelo.parquet`, se excluyen 18 CAR (no se imputa el flujo de casa).
 Especificación: [../metodologia/metodologia.md](../metodologia/metodologia.md).
 
-No es group lasso ni `survey::svyglm`. Es selección de variables para armar perfiles.
+El peso entra al ajuste. La validación cruzada no incorpora el conglomerado. Lectura de los OR: [../metodologia/metodologia.md](../metodologia/metodologia.md).
 
-## Qué no entra a X (ni se creó)
+## Fuera de X
 
-**Servicios y activos de vivienda (CRS01).** No se creó ninguna variable nueva de agua, luz, desagüe ni `C1P110`. Esas columnas viven en otra muestra; `ID` no une a la alumna. Tampoco se pegó el promedio `DEPARTAMENTO × AREA` de CRS01. Si más adelante se quiere un rasgo del **lugar**, eso sería un paso aparte (medias territoriales), no “tiene refrigeradora” en la fila.
+Servicios de vivienda de CRS01: otra muestra. En el tablero van por departamento.
 
-Tampoco entran: `DEPARTAMENTO` (25 dummies), `C3P222` (circular suave), `C3P301_2/_4/_6` y `expulsion` (varianza nula o casi), `C3P127`/`C3P124` (skip, prioridad baja), ni los bloques de leakage (`C3P209`–`215`, `216A`, `236`–`247`, `C4P248A/B`, ítems madre).
+Tampoco entran el nombre del departamento, `C3P222`, `C3P301_2`, `_4` y `_6`, expulsión, `C3P127`, `C3P124`, ni los bloques de ayuda, agresor y autolesión (`C3P209`–`215`, `216A`, `236`–`247`, `C4P248A/B`, ítems madre).
 
-## Cómo leer el coeficiente
+## Coeficientes
 
-Es un logístico: el número es el cambio en **log-odds** de reportar esa violencia a 12 meses, condicional al resto de X que el L1 dejó vivas.
-
-- **OR** = exp(coef). Multiplicador de odds. OR > 1 = más odds; OR < 1 = menos odds; OR = 1 y coef = 0 = no queda.
-- Dummy 0/1: el salto es de 0 a 1. Etnia vs mestiza, idioma vs castellano, cuidador vs madre.
-- `edad` y `pers` van **estandarizadas**: el coef es por 1 desviación estándar, no por un año ni por una persona.
-- El L1 encoge hacia 0. Un 0 no es “no existe asociación cruda”; es “no aporta lo suficiente dado las demás”. No es causal.
-
-## Qué queda y qué cae a cero
-
-Las 44 que **sí** entraron al LASSO. Célula = coeficiente logit (4 decimales). `0` = el L1 la apagó. “En los 3” cuenta cuántos targets la dejan viva.
+Las 44 variables que entraron al L1. `0` es coeficiente apagado. “En los 3” cuenta en cuántos indicadores queda distinta de cero. Edad y tamaño del hogar están estandarizados.
 
 {selection_table(all_coef)}
 
@@ -331,7 +303,7 @@ Las 44 que **sí** entraron al LASSO. Célula = coeficiente logit (4 decimales).
 {"".join(bloques)}
 ---
 
-Los coeficientes en tabla (para que k-medias y CART los lean) están en `data/tablas/lasso_crs04_coef.csv`. No es un segundo informe.
+Coeficientes: `data/tablas/lasso_crs04_coef.csv` (los leen k-medias y CART).
 """
     DOC.write_text(md, encoding="utf-8")
     print(f"wrote {DOC}")

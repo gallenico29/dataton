@@ -1,12 +1,12 @@
 """CART CRS04: reglas SI–ENTONCES sobre las X que el LASSO dejó vivas.
 
-No filtra. Un árbol por Y. Distinto del k-medias (ese agrupa personas; esto corta riesgo).
+Un árbol por Y. Entran todas.
 
 Uso:
-    python scripts/tablas/procesar_crs04.py
-    python scripts/tablas/armar_filtro_violencia.py
-    python scripts/modelos/lasso_crs04.py
-    python scripts/modelos/perfiles_cart_crs04.py
+    uv run python scripts/tablas/procesar_crs04.py
+    uv run python scripts/tablas/armar_filtro_violencia.py
+    uv run python scripts/modelos/lasso_crs04.py
+    uv run python scripts/modelos/perfiles_cart_crs04.py
 
 Escribe docs/resultados/perfiles_cart_crs04.md y docs/img/cart_*.png
 """
@@ -85,8 +85,8 @@ def lab(var: str) -> str:
 
 def x_lasso() -> list[str]:
     if not COEF.exists():
-        raise FileNotFoundError(f"Falta {COEF}. Corre: python scripts/modelos/lasso_crs04.py")
-    coef = pd.read_csv(COEF)
+        raise FileNotFoundError(f"Falta {COEF}. Corre: uv run python scripts/modelos/lasso_crs04.py")
+    coef = pd.read_csv(COEF, comment="#")
     wide = coef.pivot(index="variable", columns="target", values="coef")
     wide = wide.reindex(X_COLS)
     n_ok = (wide.abs() > EPS).sum(axis=1)
@@ -95,10 +95,10 @@ def x_lasso() -> list[str]:
 
 def load() -> pd.DataFrame:
     if not SRC.exists():
-        raise FileNotFoundError(f"Falta {SRC}. Corre: python scripts/tablas/procesar_crs04.py")
+        raise FileNotFoundError(f"Falta {SRC}. Corre: uv run python scripts/tablas/procesar_crs04.py")
     if not CRS04_FILTRO.exists():
         raise FileNotFoundError(
-            f"Falta {CRS04_FILTRO}. Corre: python scripts/tablas/armar_filtro_violencia.py"
+            f"Falta {CRS04_FILTRO}. Corre: uv run python scripts/tablas/armar_filtro_violencia.py"
         )
     x = pd.read_parquet(SRC)
     y = pd.read_parquet(CRS04_FILTRO)
@@ -281,26 +281,15 @@ def md_hojas(tab: pd.DataFrame, base: float) -> str:
 
 
 def guia() -> str:
-    return """## Cómo se lee (sin jerga)
+    return """## Cómo está armado
 
-El CART no junta alumnas “parecidas”. **Corta** la muestra con preguntas sí/no hasta separar, lo más que puede, a las que reportaron violencia de las que no.
+Corta la muestra con preguntas sí/no. Cada camino es una regla: si hay peleas en casa y no la toman en cuenta, el % de esa violencia en la hoja.
 
-Cada camino es una frase: *si hay peleas en casa y no la toman en cuenta → 78 % reporta esta violencia*. Eso es el perfil-regla. No es un “tipo de persona” (eso era el k-medias).
+Entran las X que el LASSO dejó vivas en al menos un target, no solo las 13 del 3/3. La Y sí entra: es lo que el árbol separa. Peso `FACTOR_ALUMNOS`.
 
-**X que usa:** todas las que el LASSO dejó vivas en **al menos un** target (unión), no solo las 13 del 3/3. La violencia **sí entra**: es lo que el árbol trata de separar. El peso de la encuesta entra al fit.
+Son tres árboles porque “alguna” la arrastra la psicológica (cerca del 60 %). Física y sexual cambian el primer corte.
 
-**Por qué tres árboles.** “Alguna” la empuja la psicológica (~60 %): el primer corte suele ser el de esa Y tan frecuente. Física y sexual son más raras; las reglas cambian.
-
-### Qué vas a ver en cada árbol
-
-1. **El árbol dibujado.** Arriba la primera pregunta (la que más parte). Izquierda = no / menor; derecha = sí / mayor. Las cajas de abajo son las **hojas**: ahí ya no corta. El color más rojo = más % de violencia en esa hoja.
-2. **Barras de las hojas.** Cada barra es un camino. La línea punteada es el % promedio de esa violencia en todas las alumnas. Naranja = por encima del promedio; azul = por debajo. Esa es la visualización que más se lee: “esta combinación queda 15 puntos por encima”.
-3. **Las dos cajas (más vs menos riesgo).** La hoja más alta y la más baja, en una frase.
-4. **Importancia.** Qué preguntas usó más el árbol. Si una X del LASSO no aparece, el árbol no la necesitó con profundidad 3.
-
-**n** = alumnas en la encuesta. **N** = chicas del país (peso). **pp** = puntos porcentuales contra el promedio.
-
-No es causal. Una hoja chica (n bajo) no se cuenta como hallazgo robusto.
+En cada sección: el árbol (izquierda ≈ no, derecha ≈ sí; más rojo = más % en la hoja), las barras de las hojas contra el promedio, la hoja más alta y la más baja, y qué X usó. n = entrevistas. N = peso. pp = puntos contra el promedio. No es causal. Una hoja con n bajo no se toma como resultado firme.
 """
 
 
@@ -353,7 +342,7 @@ def main() -> None:
             f"![árbol {tag}]({IMG_MD}/cart_{tag}_arbol.png)\n\n"
             f"Primera pregunta = la que más parte. Izquierda ≈ no / menor; derecha ≈ sí / mayor. "
             f"Cajas de abajo = hojas. Más rojo = más % de esta violencia.\n\n"
-            f"### Hojas (la visualización principal)\n\n"
+            f"### Hojas\n\n"
             f"![hojas {tag}]({IMG_MD}/cart_{tag}_hojas.png)\n\n"
             f"Naranja = por encima del {100 * base:.1f} % promedio. Azul = por debajo. "
             f"Cada etiqueta es el SI–ENTONCES completo.\n\n"
@@ -368,9 +357,7 @@ def main() -> None:
     md = f"""# CART CRS04 (reglas de riesgo)
 
 {ficha(
-    que_es="Reglas SI–ENTONCES: combinación de X → % de violencia. Un árbol por Y (alguna, física, sexual). No se filtra; entran todas.",
-    que_no="No arma tipos de persona (eso es k-medias). No es el LASSO: usa la unión de X que el L1 dejó vivas.",
-    tipo="Resultado del modelo",
+    "Reglas SI–ENTONCES: combinación de X → % de violencia. Un árbol por Y. Entran todas (sin filtrar).",
     script="scripts/modelos/perfiles_cart_crs04.py",
 )}
 El k-medias ([perfiles_kmeans_crs04.md](perfiles_kmeans_crs04.md)) arma **tipos de alumna**. Este CART arma **reglas**.

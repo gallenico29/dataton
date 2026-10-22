@@ -1,11 +1,8 @@
 # Descriptivos de controles: CRS04 + CRS01 (mujeres 18+)
 
-> **Qué es este informe.** Cómo se ve la muestra: edad, área, cuidador, hogar, idioma, y cruces livianos con las 3 Y. También vivienda CRS01 (servicios y activos), que **no** se pega a la alumna.
-> **Qué no es.** No decide recodes (eso es [descriptivos_predictores_crs04.md](descriptivos_predictores_crs04.md)). No es el LASSO ni los perfiles. No es el diccionario de preguntas.
-> **Tipo.** Descriptivo.
-> **Lo escribe.** `scripts/descriptivos/descriptivos_controles.py` (Python → markdown; no es Rmd).
+> Cómo se ve la muestra (edad, área, cuidador, hogar, idioma) y cruces con las 3 Y. Vivienda CRS01 por departamento, sin pegar a la alumna. (`scripts/descriptivos/descriptivos_controles.py`)
 
-**Sí: CRS01 es el grupo de 18+.** Cuestionario CRS.01, mujeres de 18 y más en vivienda. CRS04 es adolescentes 12–17 en IE; aquí el recorte es mujeres (`SEXO = 1`).
+CRS.01 es mujeres de 18 y más en vivienda. CRS.04 es adolescentes 12–17 en IE; aquí el recorte es mujeres (`SEXO = 1`).
 
 Universo CRS04: mujeres (`SEXO = 1`) · n = 9,608 · N = 1,419,491 con `FACTOR_ALUMNOS` · ENARES 2024.
 
@@ -116,7 +113,7 @@ Año de estudio (`C3ANIO`):
 | 4 | 1,930 | 20.1% | 253,293 | 17.8% |
 | 5 | 1,895 | 19.7% | 305,563 | 21.5% |
 
-Departamentos con más N expandida (la cola es larga: group lasso o no meter 25 dummies sueltas):
+Departamentos con más N expandida. El nombre del departamento no entra a X:
 
 | Departamento | n | % n | N exp. | % N |
 | --- | ---: | ---: | ---: | ---: |

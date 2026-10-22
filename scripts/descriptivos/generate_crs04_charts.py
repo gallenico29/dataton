@@ -1,4 +1,4 @@
-"""SVG charts for docs/descriptivos/violencia_crs04_si_no_missing.md."""
+"""Figuras SVG de docs/descriptivos/violencia_crs04_si_no_missing.md."""
 
 from __future__ import annotations
 

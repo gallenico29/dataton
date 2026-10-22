@@ -20,7 +20,6 @@ export const TAG_HELP = {
   Hogar: "Situaci\u00f3n en casa: peleas, si la escuchan y si se queda sola.",
   Trabajo: "Si acepta que, cuando falta plata, ella debe trabajar.",
   Escuela: "Malestar en el colegio o tipo de instituci\u00f3n educativa.",
-  "IE mujeres": "La escuela es un colegio solo de mujeres.",
   "Colegio de mujeres": "La escuela es un colegio solo de mujeres.",
   Participaci\u00f3n: "Si la toman en cuenta en las decisiones del hogar.",
   Composici\u00f3n: "Con qui\u00e9n vive (por ejemplo, con un t\u00edo).",
@@ -34,26 +33,10 @@ export const AGES = [
 ];
 
 export const ENTITIES = [
-  [
-    "MIMP / Warmi \u00d1an",
-    "Articular prevenci\u00f3n con familias y revisar las rutas hacia los CEM del territorio.",
-    "https://www.gob.pe/institucion/warmi%C3%B1an/contacto-y-numeros-de-emergencias",
-  ],
-  [
-    "MIMP / DGCVG y DGNNA",
-    "Coordinar prevenci\u00f3n y protecci\u00f3n con los factores familiares y las actitudes medidas.",
-    "https://www.gob.pe/institucion/mimp/funcionarios",
-  ],
-  [
-    "MINEDU / DRE / UGEL",
-    "Trabajar convivencia, continuidad educativa y redes de apoyo con las escuelas.",
-    "https://www.gob.pe/institucion/minedu/contacto-y-numeros-de-emergencias",
-  ],
-  [
-    "MINSA / red de salud",
-    "Coordinar atenci\u00f3n integral y derivaci\u00f3n.",
-    "https://www.gob.pe/institucion/minsa/contacto-y-numeros-de-emergencias",
-  ],
+  ["MIMP / Warmi \u00d1an", "https://www.gob.pe/institucion/warmi%C3%B1an/contacto-y-numeros-de-emergencias"],
+  ["MIMP / DGCVG y DGNNA", "https://www.gob.pe/institucion/mimp/funcionarios"],
+  ["MINEDU / DRE / UGEL", "https://www.gob.pe/institucion/minedu/contacto-y-numeros-de-emergencias"],
+  ["MINSA / red de salud", "https://www.gob.pe/institucion/minsa/contacto-y-numeros-de-emergencias"],
 ];
 
 export const IRC =

@@ -1,11 +1,8 @@
 # Inventario CRS04 (adolescentes 12–17, mujeres)
 
-> **Qué es este informe.** Diccionario corto de las preguntas CRS04: nombre de columna, qué pregunta el PDF y códigos.
-> **Qué no es.** No hay prevalencias, cruces ni modelos. No es el catálogo de violencia (eso es [violencia_por_cuestionario.md](violencia_por_cuestionario.md)).
-> **Tipo.** Descriptivo.
-> **Lo escribe.** `scripts/descriptivos/inventario_variables.py` (Python → markdown; no es Rmd).
+> Preguntas CRS04: columna, texto del PDF y códigos. (`scripts/descriptivos/inventario_variables.py`)
 
-Tabla `analisis.crs04_adolescentes`, recorte `SEXO = 1`. Una fila = una pregunta. Si el cuestionario tiene ítems `_1` a `_14`, van juntos con la descripción del diccionario (no una columna por renglón). Etiquetas: diccionarios PDF CAP100/200/248/300. La misma lista en CSV (para filtrar en Excel) está en `data/tablas/inventario_crs04.csv`. No es otro informe.
+Tabla `analisis.crs04_adolescentes`, recorte `SEXO = 1`. Una fila = una pregunta. Si el cuestionario tiene ítems `_1` a `_14`, van juntos con la descripción del diccionario (no una columna por renglón). Etiquetas: diccionarios PDF CAP100/200/248/300.
 
 Filas en el recorte: **9,608**. Columnas crudas: **1,206**. Preguntas (filas de este inventario, baterías agrupadas): **202**.
 

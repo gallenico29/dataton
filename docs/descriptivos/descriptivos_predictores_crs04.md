@@ -1,13 +1,10 @@
 # Descriptivos de predictores candidatos — CRS04
 
-> **Qué es este informe.** Cada X candidata: distribución, cruce con las 3 Y, y **tratamiento** (dummy, lineal, o fuera). Es el cuaderno de trabajo para armar la matriz.
-> **Qué no es.** No es el resultado del LASSO. No es cómo se ve la muestra en general (eso es [descriptivos_controles.md](descriptivos_controles.md)). La lista cerrada de recodes está en [../metodologia/metodologia.md](../metodologia/metodologia.md).
-> **Tipo.** Descriptivo.
-> **Lo escribe.** `scripts/descriptivos/informe_muestral_predictores.py` (Python → markdown; no es Rmd).
+> Cada X candidata: distribución, cruce con las 3 Y y tratamiento (dummy, lineal, o fuera). (`scripts/descriptivos/informe_muestral_predictores.py`)
 
 Universo: mujeres (`SEXO = 1`) · n = 9,608 · N = 1,419,491 · `FACTOR_ALUMNOS` · ENARES 2024.
 
-Lista cerrada de recodes: [../metodologia/metodologia.md](../metodologia/metodologia.md). Diseño: [../metodologia/diseno_muestral.md](../metodologia/diseno_muestral.md). Targets 12m: [violencia_crs04_si_no_missing.md](violencia_crs04_si_no_missing.md).
+Lectura del modelo: [../metodologia/metodologia.md](../metodologia/metodologia.md). Diseño: [../metodologia/diseno_muestral.md](../metodologia/diseno_muestral.md). Targets 12m: [violencia_crs04_si_no_missing.md](violencia_crs04_si_no_missing.md).
 
 Códigos de sí/no: **1 = sí, 2 = no**. En multi-respuesta (`C3P115`, `C3P118`, `C4P130`) **1 = marcado, 0/NULL = no**. `C3P301`: **1 = de acuerdo, 2 = no, 3 = no sabe**.
 
@@ -39,7 +36,7 @@ Cruce con violencia 12m (ya en controles; se repite porque aquí se decide el cu
 | 16 | 1,532 | 253,354 | 56.0% | 16.9% | 23.1% |
 | 17 | 960 | 156,807 | 53.7% | 15.8% | 22.4% |
 
-**Tratamiento:** 6 puntos. Física baja casi lineal (34.5% → 16.9% de 12 a 16). Sexual es plana (~21–24%). `EDAD²` no aporta forma de U. **Primero dummies por año o `EDAD` lineal. Cuadrático solo si el jurado pide no-linealidad.** No hace falta estandarizar para el LASSO si penalizas; sí si comparas coeficientes.
+`edad` entra lineal y estandarizada: el coeficiente es por una desviación, no por un año. La física baja de 34,5 % a 16,9 % entre los 12 y los 16 años. La sexual se queda entre 21 % y 24 %. `EDAD²` no entra: el cruce no tiene forma de U.
 
 ### `C4P129` autoidentificación étnica (9 cat.)
 
@@ -59,7 +56,7 @@ Missing = 0.
 | Otro | 204 | 2.1% | 37,596 | 2.6% |
 | Otro pueblo indígena | 1 | 0.0% | 48 | 0.0% |
 
-**Tratamiento:** dummies, referencia **Mestiza** (mayoría, 43.4%). Cola chica (Aimara, Amazonía, otro pueblo, otro): recode a “otra indígena / otro” o **group lasso**. No 8 dummies sueltas en LASSO normal.
+Entran dummies con referencia mestiza (43,4 % de la N). Aimara, Amazonía, otro pueblo y otro van juntos en `otra_indigena_otro`. “No sabe” se conserva.
 
 ### `C3P128` idioma del hogar (6 cat.)
 
@@ -75,7 +72,7 @@ Missing = 0.
 | No sabe | 8 | 0.1% | 1,004 | 0.1% |
 | missing | 22 | 0.2% | 2,979 | 0.2% |
 
-**Tratamiento:** dummies, referencia **Castellano**. Colapsar extranjero + otra nativa + NS si n ponderado < 2%.
+Entran dummies con referencia castellano. Extranjero, otra nativa y NS van juntos en `otro_idioma`.
 
 ### `C4P130_1`–`_6` discapacidad permanente
 
@@ -95,7 +92,7 @@ Missing = 0.
 | Ninguna | 8,515 | 88.6% | 1,243,826 | 87.6% |
 | Alguna limitación | 1,093 | 11.4% | 175,665 | 12.4% |
 
-**Tratamiento:** las seis sueltas gastan gl y varias están < 3%. **Mejor un dummy `alguna_discapacidad` (12.4% N).** Si el jurado quiere tipo de limitación, deja ver/entender y tira el resto a “otra”.
+Entra un solo dummy `alguna_discapacidad` (12,4 % de la N). Los seis ítems no entran sueltos: varios están bajo 3 % y se comerían grados de libertad.
 
 ### `C3P126` / `C3P127` toman en cuenta su opinión
 
@@ -115,7 +112,7 @@ Frecuencia (`C3P127`) solo si 126 = sí. Null = skip, no missing:
 | No sabe | 19 | 0.2% | 2,093 | 0.1% |
 | missing | 1,152 | 12.0% | 156,471 | 11.0% |
 
-**Tratamiento:** dummy de `C3P126`. `C3P127` como ordinal 1–3 (tirar NS) **o** no meterla: está definida solo en el sí y se pisa con 126.
+Entra `C3P126` como 0/1. `C3P127` no entra: solo se pregunta si la toman en cuenta, y repite a `C3P126`.
 
 ### `C3P301_1`–`_6` actitudes (de acuerdo / no / NS)
 
@@ -130,9 +127,7 @@ Frecuencia (`C3P127`) solo si 126 = sí. Null = skip, no missing:
 | `C3P301_5` | Padres tienen derecho a golpear | 3,781 | 33.8% | 5,574 | 253 |
 | `C3P301_6` | Puede denunciar a quien la maltrata | 8,982 | 93.8% | 511 | 115 |
 
-Ítems 2 y 6 son “pro derechos”; 1, 3, 4 y 5 son punitivos / restrictivos. **No sumes crudo.** Si quieres un índice: invierte 2 y 6 (o invierte 1/3/4/5) y suma. 4 y 5 tienen muy poco “de acuerdo” (~4% y ~9%): poca varianza para LASSO.
-
-**Tratamiento:** 4 dummies de los ítems con varianza (1, 2, 3, 6) **o** un índice de 0–6 ya invertido. No seis dummies + NS.
+Los ítems 2 y 6 van en un sentido (puede hablar, puede denunciar) y los ítems 1, 3, 4 y 5 en el otro (trabajo, dejar el colegio, golpes). No se suman: el sentido no es el mismo. Entran al LASSO `C3P301_1`, `_3` y `_5` como 0/1 (de acuerdo = 1, no y NS = 0). `_2` y `_6` quedan fuera porque casi todas están de acuerdo (95,4 % y 93,8 % de la N). `_4` queda fuera porque casi nadie está de acuerdo (2,8 %).
 
 ---
 
@@ -178,7 +173,7 @@ Incluyéndola. n null = 18 (CAR). `C3P114_VS = 1` (vive sola): 4. Valores 0 (rar
 
 El cruce es **plano** en los tres targets. Hay variación real (0–20, DE ~2), pero no hay U ni J.
 
-**Tratamiento:** lineal + estandarizar si comparas betas. **`PERS²` se puede probar, pero el cruce no lo pide.** No es el caso de `EDAD` (ahí la física sí es monótona).
+`pers` entra lineal y estandarizada. `PERS²` no entra: el cruce con las tres Y es plano. En la edad, en cambio, la física sí baja de forma monótona.
 
 ### `C3P115_1`–`_17` con quién vive (multi-respuesta)
 
@@ -204,7 +199,7 @@ No son mutuamente excluyentes. 0/1 propias. Null ≈ CAR.
 | `C3P115_16` | Hija/o de la madrastra | 28 | 0.2% | 22 |
 | `C3P115_17` | Trabajadora del hogar | 19 | 0.3% | 22 |
 
-**Tratamiento:** cada ítem ya es dummy. **No pongas referencia.** Tira o agrupa los < 2% N (hija/o de padrastro/madrastra, trabajadora del hogar). Madre+padre juntos se pisan con `C3P106`/`110`: o usas 115 o usas 106/110, no los dos bloques enteros.
+Cada ítem de `C3P115` entra como 0/1, sin categoría de referencia. `_15` a `_17` no entran (cada una bajo 2 % de la N). `_1` y `_2` no entran: madre y padre ya están en `C3P106` y `C3P110`.
 
 ### `C3P118` / `C3P119` comparte cuarto / cama
 
@@ -228,7 +223,7 @@ No son mutuamente excluyentes. 0/1 propias. Null ≈ CAR.
 | `C3P118_14` | Hija/o de la madrastra | 5 | 0.0% | 18 |
 | `C3P118_15` | Trabajadora del hogar | 0 | 0.0% | 18 |
 
-**Tratamiento:** un dummy `duerme_sola_cuarto` = `C3P118_12`. Opcional: número de personas con quien comparte cuarto (suma de 118 excepto 12). **No metas las 15 + las 15 de cama.** `C3P119` solo como derivado “comparte cama” entre quienes no duermen solas en el cuarto.
+Entra `duerme_sola_cuarto` (`C3P118_12` = 1). Las 15 columnas de cuarto y las 15 de cama no entran.
 
 ### `C3P120` quién te cuida (17 cat., mutuamente excluyente)
 
@@ -257,7 +252,7 @@ No son mutuamente excluyentes. 0/1 propias. Null ≈ CAR.
 | Hija/o de la madrastra | 4 | 0.0% | 521 | 0.0% |
 | Hija/o del padrastro | 1 | 0.0% | 120 | 0.0% |
 
-**Tratamiento:** **no 16 dummies.** Recode a madre / padre / abuelos / hermanos / otros (como en controles) **o** group lasso sobre el bloque. Cola (tía, tío, prima, trabajador/a, hijastra) se va a “otros”.
+`C3P120` entra recodificado a madre (referencia), padre, abuelos, hermanos y otros. La cola (tía, tío, prima, trabajador/a, hijastra) va a “otros”. No entran 16 dummies.
 
 ### `C3P120B` se queda sola · `C3P121` sin comer · `C3P122` falta al colegio
 
@@ -285,7 +280,7 @@ No son mutuamente excluyentes. 0/1 propias. Null ≈ CAR.
 | No | 8,914 | 92.8% | 1,319,411 | 92.9% |
 | missing | 22 | 0.2% | 2,979 | 0.2% |
 
-**Tratamiento:** 0/1 directo. Las tres tienen señal en el cruce de controles (`C3P121` y `C3P123` son de las más fuertes). Meterlas.
+Entran `C3P120B`, `C3P121` y `C3P122` como 0/1. En el cruce, quedarse sin comer y las peleas en casa son de las más fuertes.
 
 ### `C3P123` / `C3P124` peleas en casa
 
@@ -305,7 +300,7 @@ No son mutuamente excluyentes. 0/1 propias. Null ≈ CAR.
 | No sabe | 5 | 0.1% | 629 | 0.0% |
 | missing | 4,853 | 50.5% | 723,107 | 50.9% |
 
-**Tratamiento:** dummy de `C3P123` (alta). Frecuencia ordinal 1–3 si quieres intensidad; no las dos a la vez sin pensar el skip.
+Entra `C3P123` como 0/1. `C3P124` no entra: es la frecuencia y solo se pregunta si hubo peleas.
 
 ---
 
@@ -352,7 +347,7 @@ No son mutuamente excluyentes. 0/1 propias. Null ≈ CAR.
 | Muy mal | 115 | 1.2% | 20,928 | 1.5% |
 | No sabe | 11 | 0.1% | 1,130 | 0.1% |
 
-**Tratamiento:** ordinal 1–4 (tirar NS, n=11) **o** dummy mal/muy mal vs el resto. No asumas linealidad si dejas 4 dummies: “muy mal” es el 1.3% N.
+Entra `se_siente_mal` (mal o muy mal frente al resto). No entran cuatro dummies: “muy mal” es cerca del 1,5 % de la N. Los 11 NS se dejan fuera.
 
 ### `C3P218` jaló curso · `C3P219` repitió · `C3P220` expulsión · `C3P221` amigos · `C3P222` lugares con miedo
 
@@ -391,11 +386,11 @@ No son mutuamente excluyentes. 0/1 propias. Null ≈ CAR.
 | Sí | 503 | 5.2% | 77,652 | 5.5% |
 | No | 9,105 | 94.8% | 1,341,840 | 94.5% |
 
-**Tratamiento:** 0/1. `C3P220` expulsión es rarísima: poca varianza, candidata a caerse sola en el LASSO. `C3P222` (miedo a lugares del colegio) puede ser **circular** con bullying: es casi un síntoma de violencia escolar. Yo la dejaría fuera del LASSO de riesgo y la usaría después para caracterizar clusters.
+`C3P218`, `C3P219` y `C3P221` entran como 0/1. `C3P220` (expulsión, 1,1 % de la N) no entra: casi no varía. `C3P222` queda fuera de X: es un lugar del colegio al que no va por miedo, casi un síntoma de la violencia escolar, no un antecedente.
 
 ### `DEPARTAMENTO` (25 niveles)
 
-**No entra al LASSO** como 25 dummies. Es estrato del diseño y llave del dashboard. Si se insiste en “controlar territorio”, usa el proxy CRS01 (`DEPARTAMENTO`×`AREA`: electricidad, agua, activos), no 24 dummies de nombre.
+No entra a X. Veinticinco dummies de nombre no se interpretan y se comen el ajuste. Queda como estrato del diseño (`AREA` × `DEPARTAMENTO` de la escuela) y como llave del tablero. El servicio de vivienda de CRS01 se muestra por departamento; no se asigna a la fila de la alumna.
 
 ---
 
@@ -421,36 +416,34 @@ Bloques enteros a **excluir** del X del LASSO:
 | `C3P209`–`C3P215` | Ayuda / institución **después** de insultos o golpes en casa. Skip si no reportó. |
 | `C3P216A_1`–`_6` (+ sufijo `C` 12m) | Autolesión, fuga, licor. Consecuencia o comorbilidad, no factor previo. |
 | `C3P236`–`C3P247` | Ayuda y lesiones **después** de violencia escolar. |
-| `C4P248A_*_*`, `C4P248B_*` | Quién agredió y edad de inicio. Llenos solo si `C4P248_i = 1`. `C4P248A` tiene n no-null ≈ 850 en el primer ítem. Sirven **después** para describir el cluster, no para predecir `viol_sexual_12m`. |
+| `C4P248A_*_*`, `C4P248B_*` | Quién agredió y edad de inicio. Llenos solo si `C4P248_i = 1`. `C4P248A` tiene n no-null ≈ 850 en el primer ítem. Quedan fuera de X: describen el hecho ya ocurrido. |
 | `C4P251`–`C4P260` | Ayuda por violencia sexual. Mismo patrón. |
 
 Los 58 ítems madre (`C3P201_*`, `205_*`, `223_*`, `227_*`, `C4P248_*`) **son el target**, no controles.
 
 ---
 
-## Qué sí meter, y cómo (resumen)
+## Qué quedó en X
 
-| Variable | ¿Entra? | Cómo | ¿Dummy / cuadrático? |
-| --- | --- | --- | --- |
-| `EDAD` | Sí | Lineal o 5 dummies (ref. 12) | Cuadrático: no primero |
-| `C4P129` | Sí, recodificada | Dummies, ref. mestiza | Group lasso o cola colapsada |
-| `C3P128` | Sí | Dummies, ref. castellano | Colapsar cola |
-| `C4P130_*` | Sí | 1 dummy “alguna” | No 6 dummies |
-| `C3P126` | Sí | 0/1 | `C3P127` opcional |
-| `C3P301_*` | Probar | Índice invertido o 4 ítems | No 6 + NS |
-| `C3P106` / `110` | Sí, o `C3P115` | 0/1 | No ambos bloques |
-| `C3P114_PERS` | Sí | Lineal (CAR = missing) | `PERS²` opcional; el cruce es plano |
-| `C3P115_*` | Sí, recorte | Multi 0/1, sin referencia | Tira < 2% N |
-| `C3P118_12` | Sí | Duerme sola en el cuarto | No las 15+15 |
-| `C3P120` | Sí, recode 5 | Dummies, ref. madre | Group lasso si dejas 17 |
-| `C3P120B` `121` `122` `123` | Sí | 0/1 | Alta prioridad |
-| `AREA` | Sí | Rural=1 | — |
-| `INED` | Baja | Mujeres vs mixto | No 3 niveles |
-| `TURNO` | Baja | Tarde vs mañana | No hay noche |
-| `C3P217` | Probar | Ordinal 1–4 o dummy mal | — |
-| `C3P218` `219` `221` | Probar | 0/1 | `220` casi no varía |
-| `C3P222` | No (circular suave) | Post-cluster | — |
-| `DEPARTAMENTO` | No en X | Estrato + dashboard | — |
-| Bloques 209–215, 216A, 236–247, 248A/B | **No** | Leakage | — |
-
-Próximo paso natural: script que arme la matriz `X` con estos recodes, lista para `glmnet` / group lasso, **sin** las circulares.
+| Variable | Decisión |
+| --- | --- |
+| `edad` | Lineal, estandarizada. Sin cuadrático. |
+| `C4P129` | Dummies, referencia mestiza. Cola en `otra_indigena_otro`. |
+| `C3P128` | Dummies, referencia castellano. Cola en `otro_idioma`. |
+| `C4P130_*` | Un dummy `alguna_discapacidad`. |
+| `C3P126` | 0/1. `C3P127` fuera. |
+| `C3P301_1`, `_3`, `_5` | 0/1 (de acuerdo = 1). Sin índice. `_2`, `_4` y `_6` fuera. |
+| `C3P106` / `C3P110` | 0/1. No se duplican con `C3P115_1` y `_2`. |
+| `pers` | Lineal, estandarizada. Sin cuadrático. CAR = missing. |
+| `C3P115_*` | 0/1, sin referencia. `_15`–`_17` fuera. |
+| `C3P118_12` | `duerme_sola_cuarto`. El resto del bloque, fuera. |
+| `C3P120` | Cinco categorías, referencia madre. |
+| `C3P120B`, `C3P121`, `C3P122`, `C3P123` | 0/1. `C3P124` fuera. |
+| `AREA` | `rural` = 1. |
+| `INED` | `ie_mujeres`. No hay solo hombres. |
+| `TURNO` | `turno_tarde`. No hay noche. |
+| `C3P217` | `se_siente_mal` (mal o muy mal). |
+| `C3P218`, `C3P219`, `C3P221` | 0/1. `C3P220` fuera. |
+| `C3P222` | Fuera de X. |
+| `DEPARTAMENTO` | Fuera de X. Estrato y llave del tablero. |
+| Bloques 209–215, 216A, 236–247, 248A/B | Fuera de X. |

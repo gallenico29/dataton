@@ -1,9 +1,6 @@
 # CART CRS04 (reglas de riesgo)
 
-> **Qué es este informe.** Reglas SI–ENTONCES: combinación de X → % de violencia. Un árbol por Y (alguna, física, sexual). No se filtra; entran todas.
-> **Qué no es.** No arma tipos de persona (eso es [perfiles_kmeans_crs04.md](perfiles_kmeans_crs04.md)). No es el LASSO: usa la unión de X que el L1 dejó vivas.
-> **Tipo.** Resultado del modelo.
-> **Lo escribe.** `scripts/modelos/perfiles_cart_crs04.py` (Python → markdown; no es Rmd).
+> Reglas SI–ENTONCES: combinación de X → % de violencia. Un árbol por Y. Entran todas (sin filtrar). (`scripts/modelos/perfiles_cart_crs04.py`)
 
 El k-medias ([perfiles_kmeans_crs04.md](perfiles_kmeans_crs04.md)) arma **tipos de alumna**. Este CART arma **reglas**.
 
@@ -13,26 +10,15 @@ Profundidad 3, hojas gordas (`min_samples_leaf` ≈ n/40), peso `FACTOR_ALUMNOS`
 **X:** unión de las que el LASSO no apagó en los 3 a la vez (36 variables), no el núcleo 3/3.
 `edad`, `pers`, `alguna_discapacidad`, `toma_en_cuenta`, `act_trabajar`, `act_deje_colegio`, `act_padres_golpear`, `vive_padrastro`, `vive_hermana`, `vive_hermano`, `vive_abuela`, `vive_abuelo`, `vive_tia`, `vive_tio`, `vive_prima`, `vive_otros_parientes`, `vive_otra_persona`, `duerme_sola_cuarto`, `se_queda_sola`, `sin_comer`, `falta_colegio`, `peleas_casa`, `rural`, `ie_mujeres`, `turno_tarde`, `se_siente_mal`, `jalo_curso`, `repitio`, `amigos_colegio`, `etnia_quechua`, `etnia_afroperuana`, `etnia_blanca`, `etnia_no_sabe`, `cuidador_padre`, `cuidador_hermanos`, `cuidador_otros`.
 
-## Cómo se lee (sin jerga)
+## Cómo está armado
 
-El CART no junta alumnas “parecidas”. **Corta** la muestra con preguntas sí/no hasta separar, lo más que puede, a las que reportaron violencia de las que no.
+Corta la muestra con preguntas sí/no. Cada camino es una regla: si hay peleas en casa y no la toman en cuenta, el % de esa violencia en la hoja.
 
-Cada camino es una frase: *si hay peleas en casa y no la toman en cuenta → 78 % reporta esta violencia*. Eso es el perfil-regla. No es un “tipo de persona” (eso era el k-medias).
+Entran las X que el LASSO dejó vivas en al menos un target, no solo las 13 del 3/3. La Y sí entra: es lo que el árbol separa. Peso `FACTOR_ALUMNOS`.
 
-**X que usa:** todas las que el LASSO dejó vivas en **al menos un** target (unión), no solo las 13 del 3/3. La violencia **sí entra**: es lo que el árbol trata de separar. El peso de la encuesta entra al fit.
+Son tres árboles porque “alguna” la arrastra la psicológica (cerca del 60 %). Física y sexual cambian el primer corte.
 
-**Por qué tres árboles.** “Alguna” la empuja la psicológica (~60 %): el primer corte suele ser el de esa Y tan frecuente. Física y sexual son más raras; las reglas cambian.
-
-### Qué vas a ver en cada árbol
-
-1. **El árbol dibujado.** Arriba la primera pregunta (la que más parte). Izquierda = no / menor; derecha = sí / mayor. Las cajas de abajo son las **hojas**: ahí ya no corta. El color más rojo = más % de violencia en esa hoja.
-2. **Barras de las hojas.** Cada barra es un camino. La línea punteada es el % promedio de esa violencia en todas las alumnas. Naranja = por encima del promedio; azul = por debajo. Esa es la visualización que más se lee: “esta combinación queda 15 puntos por encima”.
-3. **Las dos cajas (más vs menos riesgo).** La hoja más alta y la más baja, en una frase.
-4. **Importancia.** Qué preguntas usó más el árbol. Si una X del LASSO no aparece, el árbol no la necesitó con profundidad 3.
-
-**n** = alumnas en la encuesta. **N** = chicas del país (peso). **pp** = puntos porcentuales contra el promedio.
-
-No es causal. Una hoja chica (n bajo) no se cuenta como hallazgo robusto.
+En cada sección: el árbol (izquierda ≈ no, derecha ≈ sí; más rojo = más % en la hoja), las barras de las hojas contra el promedio, la hoja más alta y la más baja, y qué X usó. n = entrevistas. N = peso. pp = puntos contra el promedio. No es causal. Una hoja con n bajo no se toma como resultado firme.
 
 
 ---
@@ -47,7 +33,7 @@ Promedio ponderado de esta Y: **65.8 %**. Hojas = 7. X que el árbol llegó a us
 
 Primera pregunta = la que más parte. Izquierda ≈ no / menor; derecha ≈ sí / mayor. Cajas de abajo = hojas. Más rojo = más % de esta violencia.
 
-### Hojas (la visualización principal)
+### Hojas
 
 ![hojas alguna_violencia](../img/cart_alguna_violencia_hojas.png)
 
@@ -81,7 +67,7 @@ Promedio ponderado de esta Y: **25.8 %**. Hojas = 7. X que el árbol llegó a us
 
 Primera pregunta = la que más parte. Izquierda ≈ no / menor; derecha ≈ sí / mayor. Cajas de abajo = hojas. Más rojo = más % de esta violencia.
 
-### Hojas (la visualización principal)
+### Hojas
 
 ![hojas fisica](../img/cart_fisica_hojas.png)
 
@@ -115,7 +101,7 @@ Promedio ponderado de esta Y: **23.0 %**. Hojas = 7. X que el árbol llegó a us
 
 Primera pregunta = la que más parte. Izquierda ≈ no / menor; derecha ≈ sí / mayor. Cajas de abajo = hojas. Más rojo = más % de esta violencia.
 
-### Hojas (la visualización principal)
+### Hojas
 
 ![hojas sexual](../img/cart_sexual_hojas.png)
 

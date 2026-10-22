@@ -4,6 +4,12 @@
 __pycache__/
 .ipynb_checkpoints/
 
-# Microdatos y PDF de INEI: CAP411.csv pesa 113 MB (límite de GitHub = 100 MB)
+# Microdatos INEI
 datos_dev/
-/data/
+
+# Productos locales (el README sí va a git)
+/data/**
+!/data/README.md
+!/data/tablas/
+/data/tablas/**
+!/data/tablas/README.md

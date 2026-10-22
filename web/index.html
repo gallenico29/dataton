@@ -3,27 +3,26 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Prioridades territoriales &middot; ENARES + CEM</title>
-  <meta name="description" content="Lectura territorial de violencia reportada (ENARES 2024) y oferta CEM 2025.">
+  <title>ENARES 2024 &middot; alumnas y CEM</title>
+  <meta name="description" content="Violencia reportada por alumnas de 12 a 17 a&ntilde;os (ENARES 2024) y CEM regulares 2025.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,400..800;1,14..32,400..800&amp;subset=latin,latin-ext&amp;display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
   <meta http-equiv="Cache-Control" content="no-store">
-  <link rel="stylesheet" href="css/app.css?v=20261021">
+  <link rel="stylesheet" href="css/app.css?v=20261021b">
 </head>
 <body>
   <header>
-    <div class="brand"><i>E</i> ENARES &middot; Prioridades territoriales</div>
-    <small>Alumnas 12-17 a&ntilde;os &middot; oferta CEM &middot; fuentes administrativas</small>
+    <div class="brand"><i>E</i> ENARES 2024</div>
+    <small>Alumnas 12-17 a&ntilde;os &middot; CRS.04 &middot; CEM regulares 2025</small>
   </header>
   <main class="shell">
     <div class="heading">
       <div>
-        <h1>Conoce a las adolescentes detr&aacute;s de los perfiles</h1>
-        <p>Explora sus contextos, las creencias presentes en el territorio y las oportunidades de intervenci&oacute;n conjunta.</p>
+        <h1>Alumnas de 12 a 17 a&ntilde;os y centros CEM</h1>
+        <p>Prevalencia de violencia en la escuela (ENARES 2024) y CEM regulares, por departamento de la instituci&oacute;n educativa.</p>
       </div>
-      <span class="demo">Persona ilustrativa &middot; cifras ENARES 2024</span>
     </div>
 
     <div class="filters">
@@ -40,7 +39,6 @@
 
     <div class="grid">
       <aside class="card">
-        <span class="eyebrow">Selecci&oacute;n territorial</span>
         <h2>Per&uacute;</h2>
         <p class="muted">El degradado en azul muestra la prevalencia de violencia en adolescentes mujeres de 12 a 17 a&ntilde;os seg&uacute;n ENARES. Los puntos son la ubicaci&oacute;n de las oficinas CEM a nivel nacional.</p>
         <div class="maparea" aria-label="Mapa de departamentos y CEM">
@@ -59,12 +57,12 @@
         <div class="story" id="story"></div>
         <div class="stats" id="stats"></div>
         <div id="ecological"></div>
-        <button class="discover" id="discover" aria-expanded="false" aria-controls="profilelist">Descubrir m&aacute;s perfiles &rarr;</button>
+        <button class="discover" id="discover" aria-expanded="false" aria-controls="profilelist">Ver perfiles</button>
         <div id="profilelist" hidden>
           <div class="sectionline">
             <div>
-              <h2 id="profiletitle">Perfiles ordenados por riesgo</h2>
-              <p class="muted" id="profilelead" style="margin:0">Tres grupos de alumnas que s&iacute; reportaron este tipo de violencia. El #1 junta m&aacute;s factores de riesgo. Pasa el cursor sobre una etiqueta para ver qu&eacute; pregunta es.</p>
+              <h2 id="profiletitle">Perfiles</h2>
+              <p class="muted" id="profilelead" style="margin:0">Tres grupos de alumnas que reportaron esta violencia. El primero concentra m&aacute;s de estos factores. Pasa el cursor sobre una etiqueta para ver la pregunta.</p>
             </div>
             <small>Perfiles nacionales</small>
           </div>
@@ -79,15 +77,14 @@
     </div>
 
     <section class="actions card">
-      <h3>&iquest;Qui&eacute;nes podr&iacute;an intervenir conjuntamente?</h3>
+      <h3>Contactos</h3>
       <p id="nextstep"></p>
       <div id="entities"></div>
     </section>
 
     <footer class="method">
-      <span class="eyebrow">Gu&iacute;a de interpretaci&oacute;n</span>
-      <h2>C&oacute;mo leer este tablero</h2>
-      <p>La historia inicial es una persona ilustrativa: no es una alumna real ni una predicci&oacute;n. Las cifras de alumnas son ENARES 2024 (12-17).</p>
+      <h2>De d&oacute;nde salen las cifras</h2>
+      <p>El nombre del perfil no es una alumna real. Las cifras de alumnas son ENARES 2024, 12-17 a&ntilde;os, cuestionario del colegio.</p>
       <div class="method-note" id="nota-metodologica">
         <b>Nota metodol&oacute;gica *</b>
         <p>Las cifras con asterisco (luz, agua, desag&uuml;e e internet) no salen del m&oacute;dulo de alumnas. CRS.04 no pregunta acceso a servicios de vivienda. Esas cifras son de CRS.01, mujeres de 18 a&ntilde;os o m&aacute;s, y se pegan al departamento de la escuela. No hay cruce persona a persona: el perfil de violencia es de la adolescente (12-17); el servicio es del territorio. El segundo n&uacute;mero de servicios es de quienes reportaron violencia de pareja en ese mismo departamento.</p>
@@ -111,6 +108,6 @@
   </main>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
-  <script type="module" src="js/main.js?v=20261021"></script>
+  <script type="module" src="js/main.js?v=20261021b"></script>
 </body>
 </html>

@@ -1,13 +1,12 @@
-"""k-medias CRS04: primero filtro sí/no alguna violencia, después cluster.
+"""k-medias CRS04: filtro sí/no alguna violencia, después cluster.
 
-X = variables que el LASSO dejó vivas en los 3 targets (núcleo 3/3).
-Y no entra al fit. CART no corre aquí.
+X = las que el LASSO dejó vivas en los 3 targets. Y no entra al fit.
 
 Uso:
-    python scripts/tablas/procesar_crs04.py
-    python scripts/tablas/armar_filtro_violencia.py
-    python scripts/modelos/lasso_crs04.py
-    python scripts/modelos/perfiles_kmeans_crs04.py
+    uv run python scripts/tablas/procesar_crs04.py
+    uv run python scripts/tablas/armar_filtro_violencia.py
+    uv run python scripts/modelos/lasso_crs04.py
+    uv run python scripts/modelos/perfiles_kmeans_crs04.py
 
 Escribe docs/resultados/perfiles_kmeans_crs04.md y docs/img/perfiles_*.svg / *.png.
 """
@@ -79,8 +78,8 @@ def wmean(s: pd.Series, w: pd.Series) -> float:
 
 def nucleo_lasso() -> tuple[list[str], pd.DataFrame]:
     if not COEF.exists():
-                raise FileNotFoundError(f"Falta {COEF}. Corre: python scripts/modelos/lasso_crs04.py")
-    coef = pd.read_csv(COEF)
+                raise FileNotFoundError(f"Falta {COEF}. Corre: uv run python scripts/modelos/lasso_crs04.py")
+    coef = pd.read_csv(COEF, comment="#")
     wide = coef.pivot(index="variable", columns="target", values="coef")
     wide = wide.reindex(X_COLS)
     n_ok = (wide.abs() > EPS).sum(axis=1)
@@ -98,10 +97,10 @@ def nucleo_lasso() -> tuple[list[str], pd.DataFrame]:
 
 def load() -> pd.DataFrame:
     if not SRC.exists():
-        raise FileNotFoundError(f"Falta {SRC}. Corre: python scripts/tablas/procesar_crs04.py")
+        raise FileNotFoundError(f"Falta {SRC}. Corre: uv run python scripts/tablas/procesar_crs04.py")
     if not CRS04_FILTRO.exists():
         raise FileNotFoundError(
-            f"Falta {CRS04_FILTRO}. Corre: python scripts/tablas/armar_filtro_violencia.py"
+            f"Falta {CRS04_FILTRO}. Corre: uv run python scripts/tablas/armar_filtro_violencia.py"
         )
     x = pd.read_parquet(SRC)
     y = pd.read_parquet(CRS04_FILTRO)
@@ -567,11 +566,11 @@ def pc_lados(pca: PCA, nucleo: list[str], eje: int, n: int = 3):
 
 def interpret_filtro(n_si: int, N_si: float, n_no: int, N_no: float, N_all: float, nombre: str) -> str:
     return (
-        f"**Qué es.** Esta barra parte la muestra *antes* del k-medias. "
+        f"Esta barra parte la muestra *antes* del k-medias. "
         f"Sí = reportó `{nombre}`; no = no la reportó.\n\n"
-        f"**Qué implica.** El {fmt_pct(N_si / N_all)} de la N (n={n_si:,}) entra al "
+        f"El {fmt_pct(N_si / N_all)} de la N (n={n_si:,}) entra al "
         f"cluster de las que sí; el {fmt_pct(N_no / N_all)} (n={n_no:,}) al de las que no. "
-        "El algoritmo **no usa** esta Y para juntar: solo las 13 X. "
+        "Esta Y no entra al agrupamiento: solo las 13 X. "
         "Si el filtro es un tipo (p. ej. física), las del “no” igual pueden tener psicológica o sexual."
     )
 
@@ -590,7 +589,7 @@ def interpret_pca(tab: pd.DataFrame, pca: PCA, nucleo: list[str]) -> str:
     der = ", ".join(pos1) if pos1 else "esas X de la derecha del biplot"
     izq = ", ".join(neg1) if neg1 else "esas X de la izquierda"
     return (
-        f"**Qué es.** Cada punto = una alumna. El k-medias las agrupó con las 13 X a la vez. "
+        f"Cada punto = una alumna. El k-medias las agrupó con las 13 X a la vez. "
         "Este dibujo **aplasta** esas 13 dimensiones a 2 ejes para que se vea. "
         "PC = componente principal = un eje resumen (un combo de las 13 X). "
         "No es violencia: es un resumen de casa / actitudes / colegio.\n\n"
@@ -602,7 +601,7 @@ def interpret_pca(tab: pd.DataFrame, pca: PCA, nucleo: list[str]) -> str:
         f"({v2:.0f} %). "
         f"Arriba: {', '.join(pos2) if pos2 else '—'}. "
         f"Abajo: {', '.join(neg2) if neg2 else '—'}.\n\n"
-        f"**Qué implica.** PC1+PC2 solo muestran {v1 + v2:.0f} % de cómo se distinguen las X. "
+        f"PC1+PC2 solo muestran {v1 + v2:.0f} % de cómo se distinguen las X. "
         f"El otro {100 - (v1 + v2):.0f} % no cabe en el plano: por eso los colores se mezclan. "
         "No quiere decir que los grupos no existan; quiere decir que 2D no alcanza. "
         "La cruz blanca es el centro de cada tipo. "
@@ -623,15 +622,15 @@ def interpret_biplot(pca: PCA, nucleo: list[str]) -> str:
         for _, v, s in r2
     )
     return (
-        "**Qué es.** Cada flecha es **una** de las 13 X. "
+        "Cada flecha es **una** de las 13 X. "
         "Si la alumna tiene esa X (sí = 1, o más edad), el punto se mueve hacia la flecha. "
         "Flechas juntas = esas X suelen ir a la par. Flechas opuestas = contrastan.\n\n"
-        f"**PC1 implica:** un eje “{', '.join(pos1) if pos1 else '—'} vs "
+        f"PC1: un eje “{', '.join(pos1) if pos1 else '—'} vs "
         f"{', '.join(neg1) if neg1 else '—'}”. "
         f"Las que más pesan: {det1}. "
         "Ejemplo: si “la toman en cuenta” apunta al revés de “peleas / se siente mal”, "
         "tener voz en casa y vivir peleas no tiran para el mismo lado.\n\n"
-        f"**PC2 implica:** un segundo eje “{', '.join(pos2) if pos2 else '—'} vs "
+        f"PC2: un segundo eje “{', '.join(pos2) if pos2 else '—'} vs "
         f"{', '.join(neg2) if neg2 else '—'}”. "
         f"Pesan: {det2}."
     )
@@ -645,13 +644,13 @@ def interpret_vars(tab: pd.DataFrame, nucleo: list[str]) -> str:
         lv = float(tab.loc[tab["cluster"] == lo, v].iloc[0])
         bits.append(
             f"**{SHORT.get(v, v)}:** `{hi}` tiene {fmt_val(v, hv)} y `{lo}` {fmt_val(v, lv)}. "
-            "Eso implica que el k-medias usó esta X para apartar esos dos tipos."
+            "El k-medias usó esta X para apartar esos dos tipos."
         )
     extra = []
     for _, r in tab.iterrows():
         if r.get("ie_mujeres", 0) > 0.95:
             extra.append(
-                f"`{r['cluster']}` es casi 100 % IE de mujeres: el algoritmo encontró el colegio de señoritas, no un “tipo de casa”."
+                f"`{r['cluster']}` es casi 100 % colegio de mujeres: el grupo se separa por el tipo de escuela."
             )
         if r.get("falta_colegio", 0) > 0.95:
             extra.append(
@@ -671,7 +670,7 @@ def interpret_vars(tab: pd.DataFrame, nucleo: list[str]) -> str:
             )
     tail = ("\n\n" + " ".join(extra)) if extra else ""
     return (
-        "**Qué es.** Un panel por cada X del LASSO. Edad en años; el resto = % del cluster que tiene esa X.\n\n"
+        "Un panel por cada X del LASSO. Edad en años; el resto = % del cluster que tiene esa X.\n\n"
         + "\n\n".join(bits)
         + tail
     )
@@ -687,18 +686,18 @@ def interpret_y(tab: pd.DataFrame, ycol: str, lado: str) -> str:
         )
     if lado == "si":
         nota = (
-            f"**Qué implica.** Aquí **todas** ya tienen `{ycol}` = 1 (por el filtro). "
+            f"Aquí **todas** ya tienen `{ycol}` = 1 (por el filtro). "
             "Si un grupo tiene más física o más sexual que otro, ese tipo de casa/actitud "
             "se junta más con violencia **superpuesta**, no con “descubrir” el filtro."
         )
     else:
         nota = (
-            f"**Qué implica.** Aquí `{ycol}` = 0 para todas. "
+            f"Aquí `{ycol}` = 0 para todas. "
             "Un % > 0 de psicológica/física/sexual es **otra** violencia, no la del filtro. "
             "Si los tres % son 0, este lado es “no reportó ninguna” (solo pasa con el filtro *alguna*)."
         )
     return (
-        "**Qué es.** Violencia 12m **después** de armar el grupo. No se usó para clusterizar.\n\n"
+        "Violencia 12m **después** de armar el grupo. No se usó para clusterizar.\n\n"
         + "\n".join(bits)
         + "\n\n"
         + nota
@@ -710,15 +709,15 @@ def interpret_edad(tab: pd.DataFrame) -> str:
     lo = tab.loc[tab["edad"].idxmin()]
     d = float(hi["edad"] - lo["edad"])
     impl = (
-        "Casi no implica nada: la edad no es lo que parte estos tipos."
+        "La edad no es lo que parte estos tipos."
         if d < 0.4
         else (
-            f"Implica que `{lo['cluster']}` es un poco más joven. "
-            "Eso no es automáticamente “más violencia”: mira el gráfico de las tres Y."
+            f"`{lo['cluster']}` es un poco más joven. "
+            "Eso no se lee como más violencia: mira el gráfico de las tres Y."
         )
     )
     return (
-        "**Qué es.** Edad media de cada tipo (años). El k-medias sí usó `edad` (estandarizada).\n\n"
+        "Edad media de cada tipo (años). El k-medias sí usó `edad` (estandarizada).\n\n"
         f"`{lo['cluster']}` = {lo['edad']:.2f} años; `{hi['cluster']}` = {hi['edad']:.2f} "
         f"(brecha {d:.2f}). {impl}"
     )
@@ -821,93 +820,17 @@ n = {res['n']:,} · N = {fmt_n(res['N'])} · silueta k={K}: **{res['sil']:.3f}**
 
 
 def guia_no_tecnica(n_all: int, N_all: float) -> str:
-    return f"""## Guía de lectura (para quien no arma el modelo)
+    return f"""## Cómo está armado
 
-Este informe no predice quién va a sufrir violencia. **Agrupa alumnas que se parecen en la casa, las actitudes y el colegio**, y *después* mira cuánta violencia hay en cada grupo.
+Agrupa alumnas parecidas en casa, actitudes y colegio (las 13 X que el LASSO dejó en los tres targets). La violencia no entra al agrupamiento; se cuenta después.
 
-Piénsalo como ordenar fichas por color y tamaño, y al final preguntar: “en este montón, ¿cuántas reportaron violencia?”. El color y el tamaño son las 13 preguntas. La violencia es lo que se cuenta al cierre. **No se usó la violencia para armar los montones.**
+n = {n_all:,} alumnas en estas tablas. N = {fmt_n(N_all)} (peso `FACTOR_ALUMNOS`). Se parte en sí y no, y dentro de cada lado se piden 3 grupos. k = 3 es un recorte. Silueta cerca de 0.1–0.15: los grupos se parecen.
 
-### De dónde salen las 13 preguntas
+Si el filtro es física = no, esa alumna puede tener psicológica o sexual. Las tres Y se muestran siempre. Solo con *alguna violencia = no* las tres quedan en 0 %.
 
-Antes hubo un LASSO: un modelo que, de muchas preguntas, se quedó con las que servían para las tres violencias a la vez (psicológica, física y sexual). Esas 13 son las únicas que entran aquí. Edad, si la toman en cuenta, si hay peleas en casa, si se queda sola, si se siente mal en el colegio, etc. No entran etnia, idioma, ni “tiene mamá”, porque el LASSO las apagó en al menos un tipo.
+El mapa PCA muestra cerca del 20 % de las diferencias entre las 13 preguntas. El nombre del grupo sale de qué barras están más altas, no del mapa. Un grupo con n chico no se lee como si fuera un tercio del país.
 
-### Qué se hizo, en orden
-
-1. Se toma a las alumnas de 12 a 17 (cuestionario del colegio). Hay {n_all:,} en estas tablas; representan a {fmt_n(N_all)} chicas en el país (eso es la **N**: cada alumna “pesa” distinto según el diseño de la encuesta).
-2. Se **parte** la muestra: las que sí reportaron una violencia y las que no. Eso se hace **cuatro veces**: alguna (cualquiera de las tres), solo psicológica, solo física, solo sexual.
-3. **Adentro** de las que sí, se arman 3 tipos. **Adentro** de las que no, otros 3 tipos. No se mezclan. El “sí” de física no se compara en el mismo cluster con el “no” de física.
-4. Recién ahí se mira: en este tipo, ¿cuánta psicológica / física / sexual hay?
-
-Si el filtro es “física = no”, esa chica **igual puede** haber reportado psicológica o sexual. Por eso las tablas siempre muestran las tres. Solo cuando el filtro es *alguna violencia = no* las tres quedan en 0 %.
-
-### Palabras que aparecen
-
-| Lo que ves | En cristiano |
-| --- | --- |
-| **n** | Cuántas alumnas hay en la encuesta en ese grupo. |
-| **N** | A cuántas chicas del país equivale ese grupo (con el peso de la encuesta). Es el número que importa para decir “este tipo es grande”. |
-| **%** | Salvo la edad, casi todo es “de cada 100 de este grupo, cuántas dijeron que sí”. |
-| **Cluster** o `psic_si-1` | Un tipo. El nombre: *qué filtro* + *sí o no* + *número*. El 1 suele ser el de más “carga” (más peleas / más otras violencias). |
-| **k = 3** | Pedimos tres tipos por lado. No es que existan solo tres en la vida real; es un recorte para poder contarlos. |
-| **Silueta** | Nota de 0 a 1 de “qué tan nítidos quedaron los tipos”. Cerca de 0.1–0.15, como aquí, significa que se parecen entre sí: los grupos **no** son islas. Sirve igual para describir, no para decir “descubrimos tres especies”. |
-| **X** | Las 13 preguntas. |
-| **Y** | La violencia (lo que se mira después). |
-
-### Cómo leer cada gráfico (el mismo orden en todas las secciones)
-
-**1. Barra del filtro (sí vs no).**  
-Qué es: cuántas están de un lado y del otro *antes* de agrupar.  
-Cómo se lee: “el 26 % reportó física”.  
-Qué no implica: no es un perfil. Es solo el tamaño del cajón.
-
-**2. El mapa con puntos de colores (PCA).**  
-Qué es: cada puntito es una alumna. El color es el tipo que le tocó. Las **cruces** son el centro de cada tipo.  
-El problema: las 13 preguntas no caben en una hoja. Entonces se inventan 2 ejes resumen, **PC1** y **PC2**, y se dibuja a las chicas en ese plano.  
-Cómo se lee: si un color se junta a la derecha y otro a la izquierda, esos tipos se distinguen en lo que mide PC1. Si todos los colores están revueltos, el dibujo no alcanza (pasa mucho: el plano solo muestra ~20 % de las diferencias).  
-Qué implica: **no** es que el agrupamiento haya fallado. Es que estás viendo un croquis. La violencia no está en este mapa.
-
-**3. PC1 y PC2, sin jerga.**
-
-- **PC** = “componente principal” = un **eje resumen**. Mezcla las 13 preguntas en una sola dirección, como una nota que junta “peleas + se siente mal + no la escuchan”.
-- **PC1** (izquierda ↔ derecha) = el resumen que **más** diferencia a *estas* chicas. Quien está a la **derecha** se parece más a las preguntas que el biplot tira a la derecha (muchas veces: “debe trabajar”, “padres pueden golpear”). Quien está a la **izquierda**, a las del otro lado (muchas veces: “la toman en cuenta”).
-- **PC2** (abajo ↔ arriba) = el **segundo** resumen, otra cosa, para no repetir PC1. A veces es edad o “colegio de mujeres” vs “se queda sola”.
-- El **porcentaje** al lado de PC1 (p. ej. 12 %) = cuánto de “en qué se distinguen estas 13 respuestas” cabe en ese eje. 12 % implica que el **88 % no se ve** en el ancho de la figura.
-- **PC1 + PC2 ≈ 20 %** implica que el mapa es un dibujo pobre a propósito. Úsalo para intuir, no para decidir.
-
-**4. El biplot (flechas).**  
-Qué es: cada flecha es **una** pregunta. Si la alumna dijo que sí (o es mayor, en el caso de la edad), su puntito se mueve hacia esa flecha.  
-Cómo se lee: flechas **juntas** = esas cosas suelen ir a la par (peleas y se queda sola). Flechas **opuestas** = contrastan (la toman en cuenta vs peleas).  
-Qué implica: te dice **qué significa** “derecha” e “izquierda” en el mapa de arriba. Sin el biplot, PC1 es un número hueco.
-
-**5. Los 13 cuadritos (una barra por pregunta).**  
-Qué es: para cada pregunta, el % de cada tipo que la tiene (la edad va en años).  
-Cómo se lee: “en el tipo 1, el 74 % se queda sola; en el tipo 3, el 59 %”.  
-Qué implica: **así se nombra el perfil**. Si un tipo sale 100 % “colegio de mujeres” o 100 % “vive con tío”, el algoritmo encontró esa sola pregunta, no un “tipo de hogar” rico. Trátalo como corte flaco, no como hallazgo profundo.
-
-**6. Las barras largas de las 13 juntas.**  
-Es lo mismo que los cuadritos, en una sola figura. Misma lectura.
-
-**7. La edad.**  
-Media de años de cada tipo. Si la brecha es 0.2 años, **no implica** nada útil. Si un tipo es más joven y además tiene más física, eso se confirma en el gráfico de las tres violencias, no aquí.
-
-**8. El gráfico de las tres violencias.**  
-Qué es: **después** de armar el grupo, qué % reportó psicológica, física y sexual.  
-Cómo se lee, lado **sí**: todas ya tienen la violencia del filtro (p. ej. todas física = 100 %). Lo que cambia es si **además** tienen las otras. Un tipo con 45 % sexual vs otro con 38 % implica más superposición, no “más física” (ya es 100 %).  
-Cómo se lee, lado **no**: nadie tiene la del filtro. Si ves 9 % física en “no psicológica”, son chicas **sin** psicológica **con** física.  
-Qué no implica: no es causa. “Este tipo tiene más peleas y más física” no prueba que las peleas produzcan la física. Es que esas cosas se juntan.
-
-### Cómo se nombra un tipo (receta)
-
-Mira los 13 cuadritos: qué barras están más altas que en los otros tipos. Eso es el nombre (“casa en pelea, no la escuchan, se queda sola”). Luego mira las tres violencias: “y en este tipo hay más física superpuesta”. No nombres el tipo “las violentadas”: todas las del lado sí ya lo son, por el filtro.
-
-### Lo que este informe no es
-
-- No es un ranking de colegios ni de departamentos.
-- No es “estas 13 preguntas causan violencia”.
-- No es un árbol de “si peleas entonces…”. Eso es el CART: [perfiles_cart_crs04.md](perfiles_cart_crs04.md).
-- Un tipo con n = 120 alumnas no se cuenta en un discurso público como si fuera un tercio del país.
-
-Detalle LASSO (cómo se eligieron las 13): [lasso_crs04.md](lasso_crs04.md).
+Reglas SI–ENTONCES: [perfiles_cart_crs04.md](perfiles_cart_crs04.md). Las 13 variables: [lasso_crs04.md](lasso_crs04.md).
 """
 
 
@@ -968,19 +891,19 @@ def main() -> None:
         print(f"{key}: si n={res_si['n']} sil={res_si['sil']:.3f} | no n={res_no['n']} sil={res_no['sil']:.3f}")
 
     ASIG.parent.mkdir(parents=True, exist_ok=True)
-    pd.concat(asig_parts, ignore_index=True).to_csv(ASIG, index=False)
+    with ASIG.open("w", encoding="utf-8", newline="") as fh:
+        fh.write("# Cluster por alumna (filtro, universo, cluster). Sale de perfiles_kmeans_crs04.py.\n")
+        pd.concat(asig_parts, ignore_index=True).to_csv(fh, index=False)
 
     md = f"""# k-medias CRS04 por tipo de violencia
 
 {ficha(
-    que_es="Tipos de alumna **dentro** de las que sí reportaron una violencia y **dentro** de las que no. Primero se filtra; después se agrupa. X = las 13 del LASSO 3/3.",
-    que_no="No predice quién va a sufrir violencia. No son reglas SI–ENTONCES (eso es CART). No es el LASSO.",
-    tipo="Resultado del modelo",
+    "Tipos de alumna **dentro** de las que sí reportaron una violencia y **dentro** de las que no. Primero se filtra; después se agrupa. X = las 13 del LASSO 3/3.",
     script="scripts/modelos/perfiles_kmeans_crs04.py",
 )}
 {guia_no_tecnica(n_all, N_all)}
 
-Selección de X: [lasso_crs04.md](lasso_crs04.md). Los coeficientes que lee el script están en `data/tablas/lasso_crs04_coef.csv` (tabla de trabajo, no un informe).
+Selección de X: [lasso_crs04.md](lasso_crs04.md). Coeficientes: `data/tablas/lasso_crs04_coef.csv`.
 
 ## Qué X usó (primer filtro LASSO)
 

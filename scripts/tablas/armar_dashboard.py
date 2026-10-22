@@ -2,15 +2,13 @@
 """Prepara JSON/GeoJSON limpios para el dashboard (web/data/).
 
 Lee:
-  - data/tablas/crs04_modelo.parquet          ENARES CRS04
-  - data/CEM Regulares (2025).geojson
-  - data/CUADRO DE VIOLENCIA FAMILIAR(SALUD).csv
-  - data/ESTADISTICA2026(MP).csv
-  - data/INEI(Sheet1).csv                     solo metadato: no entra al perfil
+  - data/tablas/crs04_modelo.parquet
+  - data/tablas/enares.duckdb
+  - data/cem_regulares_2025.geojson
 
 Uso:
-    python scripts/tablas/procesar_crs04.py
-    python scripts/tablas/armar_dashboard.py
+    uv run python scripts/tablas/procesar_crs04.py
+    uv run python scripts/tablas/armar_dashboard.py
 """
 
 from __future__ import annotations
@@ -21,16 +19,11 @@ import sys
 import unicodedata
 from pathlib import Path
 
+import duckdb
 import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from rutas import CRS04_MODELO, ROOT, WEB_DATA
-
-CRUDOS_EXTRA = ROOT / "data"
-CEM_GEO = CRUDOS_EXTRA / "CEM Regulares (2025).geojson"
-SALUD_CSV = CRUDOS_EXTRA / "CUADRO DE VIOLENCIA FAMILIAR(SALUD).csv"
-MP_CSV = CRUDOS_EXTRA / "ESTADISTICA2026(MP).csv"
-INEI_CSV = CRUDOS_EXTRA / "INEI(Sheet1).csv"
+from rutas import CEM_GEO, CRS04_MODELO, DB, WEB_DATA
 
 X_CTX = [
     "toma_en_cuenta",
@@ -105,6 +98,24 @@ def wmean(s: pd.Series, w: pd.Series) -> float | None:
     return float((s[m] * ww).sum() / ww.sum())
 
 
+def y_mask(df: pd.DataFrame, y: str) -> pd.Series:
+    psic = df["viol_psicologica_12m"] == 1
+    fis = df["viol_fisica_12m"] == 1
+    sex = df["viol_sexual_12m"] == 1
+    if y == "psic":
+        return psic
+    if y == "fis":
+        return fis
+    if y == "sex":
+        return sex
+    return psic | fis | sex
+
+
+def x_dict(df: pd.DataFrame) -> dict:
+    w = df["w"]
+    return {k: wmean(df[k], w) for k in X_CTX if k in df.columns}
+
+
 def bloque(df: pd.DataFrame) -> dict:
     w = df["w"]
     n = int(len(df))
@@ -123,15 +134,21 @@ def bloque(df: pd.DataFrame) -> dict:
             ).astype(float),
             w,
         ),
-        "x": {k: wmean(df[k], w) for k in X_CTX if k in df.columns},
+        "x": x_dict(df),
+        "x_si": {},
+        "n_si": {},
     }
+    for y in ("alguna", "psic", "fis", "sex"):
+        sub = df.loc[y_mask(df, y)]
+        out["x_si"][y] = x_dict(sub)
+        out["n_si"][y] = int(len(sub))
     return out
 
 
 def enares() -> tuple[dict, dict]:
     if not CRS04_MODELO.exists():
         raise FileNotFoundError(
-            f"Falta {CRS04_MODELO}. Corre: python scripts/tablas/procesar_crs04.py"
+            f"Falta {CRS04_MODELO}. Corre: uv run python scripts/tablas/procesar_crs04.py"
         )
     cols = [
         "DEPARTAMENTO",
@@ -203,65 +220,115 @@ def cem() -> tuple[dict, list[dict]]:
     return by, features
 
 
-def parse_salud() -> dict:
-    text = SALUD_CSV.read_text(encoding="latin-1")
-    rows = []
-    for line in text.splitlines():
-        if line.startswith("N") or line.strip().startswith("N"):
-            parts = [c.strip() for c in line.split(";")]
-            if len(parts) >= 4 and parts[0]:
-                rows.append(
-                    {
-                        "indicador": parts[0].strip(),
-                        "mujer": _num(parts[1]) if len(parts) > 1 else None,
-                        "hombre": _num(parts[2]) if len(parts) > 2 else None,
-                        "total": _num(parts[3]) if len(parts) > 3 else None,
-                    }
-                )
+def _item_cols(con: duckdb.DuckDBPyConnection, table: str, prefixes: list[str]) -> list[str]:
+    cols = [r[0] for r in con.execute(f"DESCRIBE {table}").fetchall()]
+    out: list[str] = []
+    for pref in prefixes:
+        out.extend(
+            c
+            for c in cols
+            if c.startswith(pref) and not c.endswith("_O") and "A_" not in c and "B_" not in c
+        )
+    return out
+
+
+def _any_eq1(alias: str, cols: list[str]) -> str:
+    return " OR ".join(f"COALESCE({alias}.{c}, 0) = 1" for c in cols)
+
+
+def _pack_serv(row: dict) -> dict:
+    def f(key: str) -> float | None:
+        v = row.get(key)
+        if v is None or pd.isna(v):
+            return None
+        return round(float(v), 4)
+
     return {
-        "fuente": "MINSA: cuadro de violencia familiar (archivo adjunto)",
-        "ambito": "Sin ubicacion de servicio en las filas; no se pega a un departamento.",
-        "nota": "La fila de casos (143 mujeres + 306 hombres) no cuadra con el total 1 449. Se muestra tal cual.",
-        "filas": rows,
+        "elec": f("elec"),
+        "agua": f("agua"),
+        "desague": f("desague"),
+        "internet": f("internet"),
+        "urbano": f("urbano"),
     }
 
 
-def parse_mp() -> dict:
-    text = MP_CSV.read_text(encoding="latin-1")
-    rows = []
-    for line in text.splitlines():
-        if "N" in line[:3] or line.strip().startswith("N"):
-            parts = [c.strip() for c in line.split(";")]
-            if len(parts) >= 4 and parts[0]:
-                lugar = [p for p in parts[14:] if p]
-                rows.append(
-                    {
-                        "indicador": parts[0],
-                        "mujer": _num(parts[1]) if len(parts) > 1 else None,
-                        "hombre": _num(parts[2]) if len(parts) > 2 else None,
-                        "lugar": " | ".join(lugar[:3]) if lugar else None,
-                    }
-                )
+def vivienda_crs01() -> dict:
+    """Servicios de vivienda CRS01 por departamento. No se une a CRS04."""
+    if not DB.exists():
+        raise FileNotFoundError(f"Falta {DB}. Corre: uv run python scripts/tablas/build_db.py")
+    con = duckdb.connect(str(DB), read_only=True)
+    items = _item_cols(
+        con,
+        "analisis.crs01_cap402",
+        ["C1P404_", "C1P414_", "C1P421_", "C1P431_", "C1P438_"],
+    )
+    y_sql = _any_eq1("c", items)
+    base = f"""
+        SELECT
+            m.DEPARTAMENTO AS depto,
+            COUNT(*) AS n,
+            SUM(m.FACTOR_MUJ) AS n_exp,
+            SUM(CASE WHEN ({y_sql}) THEN 1 ELSE 0 END) AS n_y,
+            SUM(m.FACTOR_MUJ * CAST(m.C1P105 = 1 AS INT)) / SUM(m.FACTOR_MUJ) AS elec,
+            SUM(m.FACTOR_MUJ * CAST(m.C1P106 = 1 AS INT)) / SUM(m.FACTOR_MUJ) AS agua,
+            SUM(m.FACTOR_MUJ * CAST(m.C1P107 IN (1, 2) AS INT)) / SUM(m.FACTOR_MUJ) AS desague,
+            SUM(m.FACTOR_MUJ * CAST(m.C1P110_4 = 1 AS INT)) / SUM(m.FACTOR_MUJ) AS internet,
+            SUM(m.FACTOR_MUJ * CAST(m.AREA = 1 AS INT)) / SUM(m.FACTOR_MUJ) AS urbano,
+            SUM(CASE WHEN ({y_sql}) THEN m.FACTOR_MUJ ELSE 0 END) AS n_exp_y,
+            SUM(CASE WHEN ({y_sql}) THEN m.FACTOR_MUJ * CAST(m.C1P105 = 1 AS INT) ELSE 0 END)
+                / NULLIF(SUM(CASE WHEN ({y_sql}) THEN m.FACTOR_MUJ ELSE 0 END), 0) AS elec_y,
+            SUM(CASE WHEN ({y_sql}) THEN m.FACTOR_MUJ * CAST(m.C1P106 = 1 AS INT) ELSE 0 END)
+                / NULLIF(SUM(CASE WHEN ({y_sql}) THEN m.FACTOR_MUJ ELSE 0 END), 0) AS agua_y,
+            SUM(CASE WHEN ({y_sql}) THEN m.FACTOR_MUJ * CAST(m.C1P107 IN (1, 2) AS INT) ELSE 0 END)
+                / NULLIF(SUM(CASE WHEN ({y_sql}) THEN m.FACTOR_MUJ ELSE 0 END), 0) AS desague_y,
+            SUM(CASE WHEN ({y_sql}) THEN m.FACTOR_MUJ * CAST(m.C1P110_4 = 1 AS INT) ELSE 0 END)
+                / NULLIF(SUM(CASE WHEN ({y_sql}) THEN m.FACTOR_MUJ ELSE 0 END), 0) AS internet_y,
+            SUM(CASE WHEN ({y_sql}) THEN m.FACTOR_MUJ * CAST(m.AREA = 1 AS INT) ELSE 0 END)
+                / NULLIF(SUM(CASE WHEN ({y_sql}) THEN m.FACTOR_MUJ ELSE 0 END), 0) AS urbano_y
+        FROM analisis.crs01_mujeres m
+        LEFT JOIN analisis.crs01_cap402 c ON m.ID = c.ID
+    """
+    nat = dict(
+        con.execute(base.replace("m.DEPARTAMENTO AS depto,", "").split("GROUP BY")[0]).fetchdf().iloc[0]
+    )
+    rows = con.execute(base + " GROUP BY 1").fetchdf()
+    con.close()
+
+    def bloque(r: dict) -> dict:
+        r = {str(k).lower(): v for k, v in r.items()}
+        return {
+            "n": int(r["n"]),
+            "N": round(float(r["n_exp"]), 1),
+            "n_y": int(r["n_y"]),
+            "todas": _pack_serv(r),
+            "con_violencia": _pack_serv(
+                {
+                    "elec": r.get("elec_y"),
+                    "agua": r.get("agua_y"),
+                    "desague": r.get("desague_y"),
+                    "internet": r.get("internet_y"),
+                    "urbano": r.get("urbano_y"),
+                }
+            ),
+        }
+
+    por = {}
+    for rec in rows.to_dict(orient="records"):
+        por[slug(rec["depto"])] = bloque(rec)
     return {
-        "fuente": "Ministerio Publico 2026 (archivo adjunto)",
-        "ambito": "Varias filas ubican el servicio en Lima / Canete. No es cobertura nacional.",
-        "nota": "No se suma a las prevalencias ENARES. Unidad: denuncias/expedientes, no victimizacion 12m.",
-        "filas": rows,
+        "fuente": "ENARES 2024, CRS.01 mujeres 18+ en vivienda",
+        "peso": "FACTOR_MUJ",
+        "y": "Alguna violencia fisica o sexual de pareja (actual, ultima o noviazgo), alguna vez",
+        "nota": "Describe el lugar. No se une a la alumna. El departamento es el del hogar.",
+        "nacional": bloque(nat),
+        "por": por,
     }
-
-
-def _num(x: str | None) -> float | None:
-    if x is None or x == "":
-        return None
-    try:
-        return float(str(x).replace(",", "").replace(" ", ""))
-    except ValueError:
-        return None
 
 
 def main() -> None:
     WEB_DATA.mkdir(parents=True, exist_ok=True)
     nacional, por = enares()
+    vivienda = vivienda_crs01()
     cem_by, cem_rows = cem()
 
     catalogo = []
@@ -285,6 +352,7 @@ def main() -> None:
         )
 
     geo = {
+        "que": "CEM regulares 2025, puntos del mapa.",
         "type": "FeatureCollection",
         "features": [
             {
@@ -312,7 +380,7 @@ def main() -> None:
         "universo": "Alumnas 12-17, cuestionario CRS.04, SEXO=1. Departamento = de la IE, no de la casa.",
         "encuesta": "ENARES 2024",
         "cem": {
-            "archivo": "CEM Regulares (2025).geojson",
+            "archivo": "cem_regulares_2025.geojson",
             "n": len(cem_rows),
             "tipo": "REGULAR",
             "periodo": "ENE-FEB 2025",
@@ -320,8 +388,9 @@ def main() -> None:
             "nota": "175 centros. Sin horarios ni otras modalidades. Sin registro no implica sin servicio.",
         },
         "x_labels": X_LABELS,
-        "fuentes_fuera": {
-            "inei_its": "INEI(Sheet1).csv parece conocimiento de ITS, sin anio ni territorio. No entra al perfil.",
+        "vivienda": {
+            "fuente": vivienda["fuente"],
+            "nota": vivienda["nota"],
         },
     }
 
@@ -332,22 +401,30 @@ def main() -> None:
         json.dumps(catalogo, ensure_ascii=False, indent=2), encoding="utf-8"
     )
     (WEB_DATA / "enares.json").write_text(
-        json.dumps({"nacional": nacional, "por": por}, ensure_ascii=False),
+        json.dumps(
+            {
+                "que": "Prevalencias y factores CRS.04 por departamento y edad. x = todas las alumnas; x_si = solo las que reportaron cada violencia. Peso FACTOR_ALUMNOS.",
+                "nacional": nacional,
+                "por": por,
+            },
+            ensure_ascii=False,
+        ),
         encoding="utf-8",
     )
+    (WEB_DATA / "vivienda.json").write_text(
+        json.dumps(vivienda, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
     (WEB_DATA / "cem.json").write_text(
-        json.dumps(cem_by, ensure_ascii=False), encoding="utf-8"
+        json.dumps(
+            {"que": "CEM regulares 2025 por departamento (lista del panel).", **cem_by},
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
     )
     (WEB_DATA / "cem.geojson").write_text(
         json.dumps(geo, ensure_ascii=False), encoding="utf-8"
     )
-    (WEB_DATA / "salud.json").write_text(
-        json.dumps(parse_salud(), ensure_ascii=False, indent=2), encoding="utf-8"
-    )
-    (WEB_DATA / "mp.json").write_text(
-        json.dumps(parse_mp(), ensure_ascii=False, indent=2), encoding="utf-8"
-    )
-    print(f"wrote {WEB_DATA}  cem={len(cem_rows)} dptos={len(catalogo)}")
+    print(f"wrote {WEB_DATA}  cem={len(cem_rows)} dptos={len(catalogo)} vivienda={len(vivienda['por'])}")
 
 
 if __name__ == "__main__":

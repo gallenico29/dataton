@@ -1,11 +1,11 @@
 """Limpieza y recodes CRS04 → matriz lista para el LASSO.
 
-Sigue docs/metodologia/metodologia.md §4–6. No incluye variables circulares.
+Sigue docs/metodologia/metodologia.md. No incluye variables circulares.
 
 Uso:
-    python scripts/tablas/procesar_crs04.py
+    uv run python scripts/tablas/procesar_crs04.py
 
-Escribe data/tablas/crs04_modelo.parquet (y .csv).
+Escribe data/tablas/crs04_modelo.parquet.
 """
 
 from __future__ import annotations
@@ -17,7 +17,7 @@ import duckdb
 import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from rutas import CRS04_MODELO, CRS04_MODELO_CSV, DB, asegurar_tablas
+from rutas import CRS04_MODELO, DB, asegurar_tablas
 
 PSIC_H = " OR ".join(f"C3P201_{i} = 1" for i in range(1, 12))
 FIS_H = " OR ".join(f"C3P205_{i} = 1" for i in range(1, 8))
@@ -180,7 +180,6 @@ def main() -> None:
 
     asegurar_tablas()
     df.to_parquet(CRS04_MODELO, index=False)
-    df.to_csv(CRS04_MODELO_CSV, index=False)
 
     n = len(df)
     n_car = int(df["car"].sum())
@@ -191,7 +190,6 @@ def main() -> None:
     for y in ("viol_psicologica_12m", "viol_fisica_12m", "viol_sexual_12m"):
         print(f"  {y}: {df[y].mean():.3f} (n sí={int(df[y].sum()):,})")
     print(f"wrote {CRS04_MODELO}")
-    print(f"wrote {CRS04_MODELO_CSV}")
 
 
 if __name__ == "__main__":

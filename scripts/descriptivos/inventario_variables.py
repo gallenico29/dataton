@@ -4,12 +4,11 @@ Agrupa baterías (C3P115_1–17, C1P110_1–20, C1P411A_*_*) en un solo renglón
 Las etiquetas salen de los diccionarios PDF de datos_dev/.
 
 Uso:
-    python scripts/descriptivos/inventario_variables.py
+    uv run python scripts/descriptivos/inventario_variables.py
 """
 
 from __future__ import annotations
 
-import csv
 import re
 import sys
 from collections import defaultdict
@@ -19,7 +18,7 @@ import duckdb
 import fitz
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from rutas import CRUDOS, DB, DOC_DESC, INV_CRS01_CSV, INV_CRS04_CSV, asegurar_docs, ficha
+from rutas import CRUDOS, DB, DOC_DESC, asegurar_docs, ficha
 
 DATOS = CRUDOS
 
@@ -411,25 +410,6 @@ def md_table(headers: list[str], rows: list[list[str]]) -> str:
     return "\n".join(lines)
 
 
-def write_csv(path: Path, rows: list[dict]) -> None:
-    fields = [
-        "tabla",
-        "capitulo",
-        "variables",
-        "n_cols",
-        "descripcion",
-        "categorias",
-        "tipo",
-        "n",
-        "pct_null_min",
-        "pct_null_max",
-    ]
-    with path.open("w", encoding="utf-8", newline="") as fh:
-        w = csv.DictWriter(fh, fieldnames=fields, extrasaction="ignore")
-        w.writeheader()
-        w.writerows(rows)
-
-
 def write_md(
     path: Path,
     title: str,
@@ -535,25 +515,18 @@ def main() -> None:
         sat.extend(rows)
 
     asegurar_docs()
-    write_csv(INV_CRS04_CSV, r4)
-    write_csv(INV_CRS01_CSV, r1 + sat)
-
     write_md(
         DOC_DESC / "inventario_crs04.md",
         "Inventario CRS04 (adolescentes 12–17, mujeres)",
         "Tabla `analisis.crs04_adolescentes`, recorte `SEXO = 1`. "
         "Una fila = una pregunta. Si el cuestionario tiene ítems `_1` a `_14`, "
         "van juntos con la descripción del diccionario (no una columna por renglón). "
-        "Etiquetas: diccionarios PDF CAP100/200/248/300. "
-        "La misma lista en CSV (para filtrar en Excel) está en "
-        "`data/tablas/inventario_crs04.csv`. No es otro informe.",
+        "Etiquetas: diccionarios PDF CAP100/200/248/300.",
         n4,
         len(cols4),
         r4,
         ficha(
-            que_es="Diccionario corto de las preguntas CRS04: nombre de columna, qué pregunta el PDF y códigos.",
-            que_no="No hay prevalencias, cruces ni modelos. No es el catálogo de violencia (eso es violencia_por_cuestionario).",
-            tipo="Descriptivo",
+            "Preguntas CRS04: columna, texto del PDF y códigos.",
             script="scripts/descriptivos/inventario_variables.py",
         ),
     )
@@ -561,18 +534,15 @@ def main() -> None:
     write_md(
         DOC_DESC / "inventario_crs01.md",
         "Inventario CRS01 (mujeres 18+)",
-        "Sí: CRS01 es el cuestionario de **mujeres de 18 y más** en vivienda. "
+        "CRS01 es el cuestionario de **mujeres de 18 y más** en vivienda. "
         "Tabla ancha `analisis.crs01_mujeres` más satélites CAP402, CAP405 y CAP411. "
         "Una fila = una pregunta; las baterías (p. ej. `C1P110_1`–`_20`, `C1P411_1`–`_N`) "
-        "están colapsadas. Etiquetas: diccionarios PDF. "
-        "La misma lista en CSV está en `data/tablas/inventario_crs01.csv`. No es otro informe.",
+        "están colapsadas. Etiquetas: diccionarios PDF.",
         n1,
         n_raw_01,
         r1 + sat,
         ficha(
-            que_es="Diccionario corto de las preguntas CRS01 (mujeres 18+ en vivienda), satélites incluidos.",
-            que_no="No se une a la alumna. No es el comparativo CRS01 vs CRS04 (eso es descriptivos_crs01_vs_crs04).",
-            tipo="Descriptivo",
+            "Preguntas CRS01 (mujeres 18+ en vivienda), satélites incluidos.",
             script="scripts/descriptivos/inventario_variables.py",
         ),
     )

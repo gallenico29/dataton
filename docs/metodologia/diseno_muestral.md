@@ -1,11 +1,8 @@
 # Diseño muestral: CRS04 (12–17) y CRS01 (mujeres 18+)
 
-> **Qué es este informe.** Números del diseño: qué es el PSU, el estrato, el peso, y qué tan flacos quedan los estratos. Sirve para `svydesign` y para no tratar a las alumnas como independientes.
-> **Qué no es.** No es la matriz X ni los recodes (eso es [metodologia.md](metodologia.md)). No es el LASSO. No es un descriptivo de las preguntas.
-> **Tipo.** Metodológico.
-> **Lo escribe.** `scripts/descriptivos/informe_muestral_predictores.py` (Python → markdown; no es Rmd).
+> PSU, estrato y peso de CRS04 y CRS01. (`scripts/descriptivos/informe_muestral_predictores.py`)
 
-ENARES 2024. Este doc fija **estrato, conglomerado y peso** de las dos encuestas. Las dos muestras **no se unen** a nivel persona (`ID` no es llave común).
+ENARES 2024. Estrato, conglomerado y peso de las dos encuestas. Las muestras no se unen a nivel persona (`ID` no es llave común).
 
 Universo de trabajo CRS04: `analisis.crs04_adolescentes`, `SEXO = 1` · n = 9,608 · N = 1,419,491 (`FACTOR_ALUMNOS`).
 
@@ -13,37 +10,24 @@ Universo CRS01: `analisis.crs01_mujeres` · n = 13,826 · N mujer = 12,401,665 (
 
 ---
 
-## Qué es cada cosa (las dos encuestas)
+## CRS04 y CRS01
 
 | Pieza | CRS04 alumnas 12–17 | CRS01 mujeres 18+ |
 | --- | --- | --- |
 | Marco | Institución educativa (secundaria regular) | Vivienda / hogar |
 | Fila | Alumna | Mujer seleccionada (1 por hogar) |
-| Llave de la fila | `ID` + `COLEGIAL_ID` | `ID` (= hogar) · `PERSONA_ID` de la seleccionada |
-| **PSU / conglomerado** | **`ID` = la IE**. No existe `CONGLOME` (0 columnas con ese nombre). | **`CONGLOME`** (sí viene explícito). Varios hogares por conglomerado. |
-| SSU (opcional) | `C3SECC` (sección dentro de la IE) | No hace falta: 1 mujer por `ID` |
-| **Estrato** | `AREA` × `DEPARTAMENTO` de la **IE** (49 celdas; Callao no tiene rural) | `AREA` × `DEPARTAMENTO` del **hogar** (también 49; Callao solo urbano) |
-| Peso | `FACTOR_ALUMNOS` (mín 2.12, máx 5,194) | `FACTOR_MUJ` (análisis de la mujer) · `FACTOR_VIV` (vivienda / activos) |
-| `AREA` / `DEPARTAMENTO` | De la IE, no de la casa. El 12.7% no vive en el distrito de la IE. | Del hogar |
-
-```mermaid
-flowchart TB
-  subgraph crs04 [CRS04 IE]
-    A4["Estrato AREA x DEPARTAMENTO de la IE"] --> B4["PSU: ID colegio"]
-    B4 --> C4["SSU opcional: C3SECC"]
-    C4 --> D4["Alumna: COLEGIAL_ID"]
-  end
-  subgraph crs01 [CRS01 vivienda]
-    A1["Estrato AREA x DEPARTAMENTO del hogar"] --> B1["PSU: CONGLOME"]
-    B1 --> C1["Hogar ID / mujer seleccionada"]
-  end
-```
+| Llave de la fila | `ID` + `COLEGIAL_ID` | `ID` (hogar) · `PERSONA_ID` de la seleccionada |
+| Conglomerado | `ID` de la escuela. `CONGLOME` no está en el archivo (0 columnas). | `CONGLOME` |
+| Sección | `C3SECC` | Una mujer por hogar |
+| Estrato | `AREA` × `DEPARTAMENTO` de la escuela (49 celdas; Callao sin rural) | `AREA` × `DEPARTAMENTO` del hogar (49 celdas; Callao sin rural) |
+| Peso | `FACTOR_ALUMNOS` (mín 2.12, máx 5,194) | `FACTOR_MUJ` en la mujer · `FACTOR_VIV` en la vivienda |
+| Área y departamento | De la escuela. El 12,7 % de la N no vive en el distrito de la escuela. | Del hogar |
 
 ---
 
-## CRS04 — el colegio es el conglomerado
+## CRS04
 
-No hay columna `CONGLOME`. La estructura de llaves alcanza: varias alumnas comparten el mismo `ID` y **no son independientes**.
+El conglomerado es `ID`. Varias alumnas comparten escuela.
 
 | Estadístico | Valor |
 | --- | ---: |
@@ -57,7 +41,7 @@ No hay columna `CONGLOME`. La estructura de llaves alcanza: varias alumnas compa
 | Estratos con 1 PSU | **0** |
 | Estratos con exactamente 2 PSU | 1 |
 
-`svydesign` exige ≥2 PSU por estrato. Aquí **cero singletons**. Los estratos flacos (≤4 IE):
+Ningún estrato tiene una sola escuela. Estratos con 4 escuelas o menos:
 
 | Departamento | Área | IE (PSU) | n alumnas |
 | --- | --- | ---: | ---: |
@@ -67,26 +51,13 @@ No hay columna `CONGLOME`. La estructura de llaves alcanza: varias alumnas compa
 | MOQUEGUA | Rural | 4 | 20 |
 | TUMBES | Rural | 4 | 20 |
 
-Tacna rural es el más delicado: 2 colegios, 10 alumnas. `nest = TRUE` evita que `survey` cruce mal IEs homónimas entre estratos.
-
-`C3SECC` es un segundo nivel real (mediana 2 secciones por IE; alumnas de la misma sección se parecen más). Un multinivel alumna → sección → colegio es defendible. **Para el LASSO con `survey::svydesign` alcanza `ids = ~ID`.** Si más adelante se quiere dos etapas: `ids = ~ID + seccion_uid` con `seccion_uid = paste(ID, C3SECC)`.
-
-```r
-library(survey)
-diseno_crs04 <- svydesign(
-  ids     = ~ID,
-  strata  = ~interaction(AREA, DEPARTAMENTO),
-  weights = ~FACTOR_ALUMNOS,
-  data    = alumnas,   # SEXO == 1
-  nest    = TRUE
-)
-```
+Tacna rural: 2 escuelas, 10 alumnas. `nest = TRUE` porque el identificador de escuela puede repetirse entre estratos. La sección (`C3SECC`, mediana 2 por escuela) no entra como segunda etapa. El ajuste usa `ids = ID`, estrato `AREA` × `DEPARTAMENTO` y peso `FACTOR_ALUMNOS`.
 
 ---
 
-## CRS01 — sí hay `CONGLOME`
+## CRS01
 
-Una mujer seleccionada por hogar: n = hogares = 13,826. El PSU no es el hogar; es el conglomerado censal.
+Una mujer por hogar: n = 13,826. El conglomerado es `CONGLOME`, no el hogar.
 
 | Estadístico | Valor |
 | --- | ---: |
@@ -97,52 +68,25 @@ Una mujer seleccionada por hogar: n = hogares = 13,826. El PSU no es el hogar; e
 | Estratos con 1 PSU | **0** |
 | Estratos con exactamente 2 PSU | 1 |
 
-Estratos flacos (≤4 conglomerados):
+Estratos con 4 conglomerados o menos:
 
 | Departamento | Área | CONGLOME (PSU) | n mujeres |
 | --- | --- | ---: | ---: |
 | TUMBES | Rural | 2 | 24 |
 | ICA | Rural | 4 | 48 |
 
-Tumbes rural: 2 conglomerados, 24 mujeres. Mismo recaudo que Tacna rural en CRS04.
+Tumbes rural: 2 conglomerados, 24 mujeres.
 
-```r
-diseno_crs01_mujer <- svydesign(
-  ids     = ~CONGLOME,
-  strata  = ~interaction(AREA, DEPARTAMENTO),
-  weights = ~FACTOR_MUJ,
-  data    = mujeres18,
-  nest    = TRUE
-)
+La mujer se expande con `FACTOR_MUJ`. La vivienda (agua, desagüe, activos) se expande con `FACTOR_VIV`. Mismo conglomerado y mismo estrato. `FACTOR_NIÑOS` está vacío en el 80 % de las filas de este recorte. `FACTOR_POBLACION` es el peso del padrón.
 
-# Solo si el análisis es de la vivienda (agua, C1P110):
-diseno_crs01_viv <- svydesign(
-  ids     = ~CONGLOME,
-  strata  = ~interaction(AREA, DEPARTAMENTO),
-  weights = ~FACTOR_VIV,
-  data    = mujeres18,
-  nest    = TRUE
-)
-```
-
-`FACTOR_NIÑOS` no se usa en este recorte (80% null: no hay NNA en el hogar). `FACTOR_POBLACION` es del padrón, no de la seleccionada.
+El modelo de alumnas usa solo CRS04. Los servicios de CRS01 se muestran por departamento de la escuela y no se pegan a la fila.
 
 ---
 
-## Cómo las vamos a usar juntas
-
-1. **Modelo de riesgo / LASSO / clusters de alumnas:** solo CRS04, `diseno_crs04`. PSU = `ID`. Estrato = `AREA`×`DEPARTAMENTO` de la IE.
-2. **SES de vivienda (agua, desagüe, activos `C1P110`):** solo CRS01, `diseno_crs01_viv`. **No se pega a la fila de la alumna.** Si se quiere contexto territorial, se agregan medias por `DEPARTAMENTO`×`AREA` en CRS01 y se unen a la alumna por el depto/área **de su IE**. Eso es un rasgo del lugar, no de su casa.
-3. **No** se usa `DEPARTAMENTO` como 25 dummies dentro del LASSO de alumnas (sobreajuste, sin interpretación). Sí se usa como estrato del diseño y como llave del dashboard.
-
----
-
-## Lo que este diseño no arregla
+## Límites
 
 - `RFINAL = 2` (encuesta incompleta) en CRS04: 12.4% de casos, 21.6% de la N. Los ítems de violencia están llenos; el peso de las incompletas es más alto.
 - En CRS04, `AREA` urbana es de la IE. No es “vive en zona urbana”.
 - 18 filas CAR (`C3P105 = 2`) se saltan el flujo de casa: missing de `C3P114`/`C3P115`/`C3P120` no es no-respuesta.
 
-Especificación formal de la matriz X (tratamiento, referencia, prioridad y exclusiones por leakage): [metodologia.md](metodologia.md).
-
-Descriptivos de las candidatas (distribuciones y cruces): [../descriptivos/descriptivos_predictores_crs04.md](../descriptivos/descriptivos_predictores_crs04.md).
+Las tres Y y la lectura de los OR: [metodologia.md](metodologia.md). Distribuciones de las X: [../descriptivos/descriptivos_predictores_crs04.md](../descriptivos/descriptivos_predictores_crs04.md).

@@ -51,16 +51,7 @@ header small { color: #c6d5e3; }
   letter-spacing: -0.04em;
   margin: 0 0 5px;
 }
-.heading p { margin: 0; color: #5a7084; line-height: 1.45; }
-.demo {
-  padding: 8px 12px;
-  background: #fff1d5;
-  border-radius: 30px;
-  color: #725720;
-  font-size: 0.82rem;
-  font-weight: 700;
-  white-space: nowrap;
-}
+.heading p { margin: 0; color: #5a7084; line-height: 1.45; max-width: 62ch; }
 
 .filters {
   display: grid;
@@ -111,14 +102,7 @@ select {
   box-shadow: 0 3px 14px #25415c0a;
   min-width: 0;
 }
-.eyebrow {
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  font-size: 0.73rem;
-  color: #6d8395;
-  font-weight: 800;
-}
-.card h2 { font-size: 1.13rem; margin: 7px 0 4px; letter-spacing: -0.02em; }
+.card h2 { font-size: 1.13rem; margin: 0 0 4px; letter-spacing: -0.02em; }
 .muted { color: #63798b; font-size: 0.88rem; line-height: 1.5; margin: 4px 0 16px; }
 
 .maparea {
@@ -531,7 +515,7 @@ a.fn:hover, a.fn:focus-visible { color: #92400e; }
   padding: 21px;
   color: #f5f7fa;
 }
-.method .eyebrow, .method p, .methodgrid p { color: #c8d8e4; }
+.method p, .methodgrid p { color: #c8d8e4; }
 .method h2 { margin: 0 0 10px; font-size: 1.13rem; color: #fff; }
 .method-note {
   margin: 14px 0 0;
@@ -569,7 +553,7 @@ a.fn:hover, a.fn:focus-visible { color: #92400e; }
 @media (max-width: 640px) {
   .shell { padding: 20px 15px 40px; }
   header { padding: 14px 16px; }
-  header small, .demo { display: none; }
+  header small { display: none; }
   .filters { grid-template-columns: 1fr 1fr; }
   .stats { grid-template-columns: 1fr 1fr; }
   .methodgrid, .areas { grid-template-columns: 1fr; }

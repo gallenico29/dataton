@@ -53,8 +53,11 @@ function cleanProfileText(text) {
     .replace(/\bn\s*=\s*[\d.,]+[:.]?/gi, "")
     .replace(/\bN\s*[~\u2248]?\s*[\d.,]+\s*(mil)?/gi, "")
     .replace(/\bcaj[o\u00f3]n chico[,.]?/gi, "")
-    .replace(/No lo leas como un tipo de casa\.?/gi, "El algoritmo las junt\u00f3 por el tipo de escuela, no porque se parezcan en la casa.")
-    .replace(/no un tipo de casa mixto\.?/gi, "no un perfil de hogar m\u00e1s amplio.")
+    .replace(/No lo leas como un tipo de casa\.?/gi, "")
+    .replace(/no un tipo de casa mixto\.?/gi, "")
+    .replace(/El algoritmo las junt\u00f3 por el tipo de escuela, no porque se parezcan en la casa\.?/gi, "El grupo se separa por el tipo de escuela.")
+    .replace(/no armes pol[i\u00edt]tica solo con esto\.?/gi, "")
+    .replace(/no sirve para armar pol[i\u00edt]tica\.?/gi, "Grupo peque\u00f1o.")
     .replace(/\s{2,}/g, " ")
     .replace(/\s+([.,;:])/g, "$1")
     .trim();
@@ -165,15 +168,12 @@ export function renderPanel(bundle) {
   const labSubAlu = `Las que reportaron ${vlab}`;
 
   const lugar = placeName(info, national);
-  document.getElementById("title").textContent = `Conoce a ${name}`;
+  document.getElementById("title").textContent = `${name}, ${years} a\u00f1os`;
   const asideTitle = document.querySelector("aside.card > h2");
   if (asideTitle) asideTitle.textContent = info?.label || depto;
 
   document.getElementById("story").innerHTML = `
-    <strong>${name} tiene ${years} a\u00f1os y estudia en ${lugar}.</strong>
-    En su hogar hay discusiones y siente que su opini\u00f3n pocas veces es escuchada.
-    Tambi\u00e9n pasa parte del d\u00eda sin compa\u00f1\u00eda adulta.
-    <br><br>
+    <strong>Escuela en ${lugar}.</strong>
     El perfil sale de alumnas de ${ageLab} a\u00f1os en ENARES que m\u00e1s concentran <strong>${vlab}</strong>,
     no de la violencia reportada por mujeres de 18 a\u00f1os o m\u00e1s.
     Esa encuesta solo describe el territorio (luz, agua, desag\u00fce).
@@ -221,8 +221,8 @@ export function renderPanel(bundle) {
 
   document.getElementById("ecological").innerHTML = `
     <div class="areas-head">
-      <strong>Indicadores por nivel ecol\u00f3gico</strong>
-      <p class="muted">En cada bloque se ve el conjunto y el subgrupo con violencia. Comunitario: mujeres 18+. Relacional e individual: adolescentes ${ageLab} a\u00f1os.</p>
+      <strong>Territorio, casa y creencias</strong>
+      <p class="muted">Arriba, el conjunto. Abajo, el subgrupo con violencia. Servicios: mujeres de 18 a\u00f1os o m\u00e1s. Casa y creencias: alumnas de ${ageLab} a\u00f1os.</p>
     </div>
     <div class="areas">
       <div class="area servicios">
@@ -266,14 +266,14 @@ export function renderPanel(bundle) {
   if (profileTitle) profileTitle.textContent = `Perfiles de ${vlab}`;
   if (profileLead) {
     profileLead.textContent =
-      `Tres grupos de alumnas que s\u00ed reportaron ${vlab}. El #1 junta m\u00e1s factores de riesgo. Pasa el cursor sobre una etiqueta para ver qu\u00e9 pregunta es.`;
+      `Tres grupos de alumnas que reportaron ${vlab}. El primero concentra m\u00e1s de estos factores. Pasa el cursor sobre una etiqueta para ver la pregunta.`;
   }
 
   document.getElementById("profiles").innerHTML = groups
     .map((g, i) => {
       const aviso =
         g.chico && !/grupo peque/i.test(g.texto || "")
-          ? " Este grupo es peque\u00f1o: no alcanza para armar una pol\u00edtica."
+          ? " Grupo peque\u00f1o."
           : "";
       const titulo = String(g.titulo || "").replace(/\s*\(n chico\)/i, " (grupo peque\u00f1o)");
       return `<article class="profile${g.chico ? " chico" : ""}">
@@ -366,13 +366,11 @@ export function renderPanel(bundle) {
   `;
 
   document.getElementById("nextstep").innerHTML = `
-    Para ${info.label}: MIMP con familias y escuela con convivencia.
-    La <a href="${IRC}" target="_blank" rel="noopener">Instancia Regional de Concertaci\u00f3n</a>
-    puede acordar responsables.
+    <a href="${IRC}" target="_blank" rel="noopener">Instancia Regional de Concertaci\u00f3n</a>
   `;
   document.getElementById("entities").innerHTML = ENTITIES.map(
-    ([n, t, u]) =>
-      `<div class="entity"><b>${n}</b><span>${t}</span><div class="contact"><a href="${u}" target="_blank" rel="noopener">Ver contacto institucional</a></div></div>`
+    ([n, u]) =>
+      `<div class="entity"><b>${n}</b><div class="contact"><a href="${u}" target="_blank" rel="noopener">Contacto</a></div></div>`
   ).join("");
 }
 
@@ -383,7 +381,7 @@ export function bindDiscover() {
     list.hidden = !list.hidden;
     btn.setAttribute("aria-expanded", String(!list.hidden));
     btn.textContent = list.hidden
-      ? "Descubrir m\u00e1s perfiles \u2192"
-      : "Ocultar perfiles \u2191";
+      ? "Ver perfiles"
+      : "Ocultar perfiles";
   });
 }

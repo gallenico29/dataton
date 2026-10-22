@@ -1,11 +1,8 @@
 # CRS01 vs CRS04: ¿la misma información individual?
 
-> **Qué es este informe.** Qué se les pregunta a las de 18+ y a las de 12–17: qué dominio se pisa y qué no. Sirve para no mezclar ítems que parecen iguales.
-> **Qué no es.** No une personas. No es el inventario completo ni las distribuciones de controles.
-> **Tipo.** Descriptivo.
-> **Lo escribe.** `scripts/descriptivos/descriptivos_crs01.py` (Python → markdown; no es Rmd).
+> Qué se pregunta a 18+ y a 12–17: qué dominio se pisa. Las muestras no se unen a nivel persona. (`scripts/descriptivos/descriptivos_crs01.py`)
 
-No. Las mujeres de 18+ **no tienen el mismo cuestionario** que las de 12–17. Hay un núcleo que se pregunta a ambas (etnia, migración, discapacidad, tamaño/composición del hogar, tareas). El resto no se cruza: las adultas tienen vivienda y violencia de pareja; las adolescentes tienen cuidado, colegio y victimización escolar.
+Las mujeres de 18+ **no tienen el mismo cuestionario** que las de 12–17. Hay un núcleo que se pregunta a ambas (etnia, migración, discapacidad, tamaño/composición del hogar, tareas). El resto no se cruza: las adultas tienen vivienda y violencia de pareja; las adolescentes tienen cuidado, colegio y victimización escolar.
 
 Universo CRS01: `analisis.crs01_mujeres` · n = 13,826 · N = 12,401,665 con `FACTOR_MUJ` · edad 18–99 (media ponderada 43.6).
 
@@ -35,7 +32,7 @@ No son los mismos nombres de columna (`C3P`/`C4P` vs `C1P`). Sí es el mismo **d
 | Educación | `C3ANIO` año actual (todas en secundaria) | `C1P210` último nivel aprobado | No comparable 1 a 1. |
 | Trabajo | `C3P120A` si el cuidador trabaja | `C1P307` si ella trabajó | No. Distinto sujeto. |
 
-Para comparar prevalencias entre edades, usa solo esa lista. Recode etnia y discapacidad 1:1. Área y departamento: en CRS04 es la IE; en CRS01 es el hogar. Lengua **no** se compare sin recode: en la niña es “qué hablan en casa”, en la adulta es “qué aprendió de niña”.
+Las prevalencias de los dos cuestionarios se comparan solo en esa lista. Etnia y discapacidad llevan el mismo recode. Área y departamento en CRS04 son de la institución educativa; en CRS01, del hogar. La lengua no se compara directo: en la alumna es el idioma de la casa y en la adulta la lengua materna.
 
 Tamaño de hogar de referencia: CRS01 media 3.60 miembros (padrón); CRS04 media 5.16 (ella cuenta, incluye a ella).
 
@@ -186,10 +183,10 @@ Agua, luz, desagüe y activos: [descriptivos_controles.md](descriptivos_controle
 
 ---
 
-## Qué implica para el modelo
+## En el modelo
 
-No armes un solo LASSO mezclando filas de C1 y CRS04: factores, grano y targets son distintos.
+El LASSO y los perfiles usan solo CRS04. Las filas de CRS01 no entran a esa matriz: `FACTOR_MUJ` y `FACTOR_ALUMNOS` no son el mismo peso, la fila es la mujer del hogar o la alumna, y la dependiente es violencia de pareja o violencia a 12 meses en casa y colegio.
 
-Si quieres **comparar perfiles** (adolescente vs adulta): usa el bloque común (etnia, migración, discapacidad, composición/tamaño, quién mantiene, área) con recodes alineados, y deja vivienda solo en C1 y cuidado/colegio solo en CRS04.
+Etnia, migración, discapacidad, tamaño y composición del hogar, quién mantiene y área se preguntan en los dos cuestionarios y se leen por separado. Vivienda, servicios y activos quedan en CRS01. Cuidado, colegio y las tres violencias a 12 meses quedan en CRS04.
 
-Si el modelo es **solo CRS04**, C1 aporta controles territoriales (depto × área), no variables individuales de la niña.
+Del CRS01 el tablero toma luz, agua, desagüe e internet por departamento de la escuela. Es una cifra del lugar, no una variable de la alumna.

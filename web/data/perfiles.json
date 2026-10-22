@@ -23,7 +23,7 @@
       {
         "id": "alguna_si-2",
         "titulo": "Colegio de mujeres",
-        "texto": "Casi todas estudian en un colegio de mujeres. El algoritmo las juntó por el tipo de escuela, no porque se parezcan en la casa. Es el grupo más chico: no armes política solo con esto.",
+        "texto": "Casi todas estudian en un colegio de mujeres. El grupo se separa por el tipo de escuela. Es el más chico.",
         "tags": [
           "Escuela",
           "Colegio de mujeres"
@@ -57,7 +57,7 @@
       {
         "id": "psic_si-1",
         "titulo": "Vive con tío",
-        "texto": "Casi todas viven con un tío. Las junta esa sola pregunta, no un perfil de hogar más amplio.",
+        "texto": "Casi todas viven con un tío. El grupo se separa por esa pregunta.",
         "tags": [
           "Hogar",
           "Composición"
@@ -189,7 +189,7 @@
       {
         "id": "sex_si-3",
         "titulo": "Colegio de mujeres (grupo pequeño)",
-        "texto": "100 % colegio de mujeres. Grupo pequeño: no sirve para armar política.",
+        "texto": "Todas en un colegio de mujeres. Grupo pequeño.",
         "tags": [
           "Escuela",
           "Colegio de mujeres"

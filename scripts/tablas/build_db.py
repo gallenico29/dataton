@@ -1,7 +1,7 @@
 """Carga los CSV de ENARES en DuckDB y arma tablas de análisis.
 
 Uso:
-    python scripts/tablas/build_db.py
+    uv run python scripts/tablas/build_db.py
 """
 
 from __future__ import annotations

@@ -1,7 +1,7 @@
 """Descriptivos de controles CRS04 (alumnas) y CRS01 (vivienda).
 
 Uso:
-    python scripts/descriptivos/descriptivos_controles.py
+    uv run python scripts/descriptivos/descriptivos_controles.py
 
 Escribe docs/descriptivos/descriptivos_controles.md y docs/img/controles_*.svg
 """
@@ -717,12 +717,10 @@ def main() -> None:
     md = f"""# Descriptivos de controles: CRS04 + CRS01 (mujeres 18+)
 
 {ficha(
-    que_es="Cómo se ve la muestra: edad, área, cuidador, hogar, idioma, y cruces livianos con las 3 Y. También vivienda CRS01 (servicios y activos), que **no** se pega a la alumna.",
-    que_no="No decide recodes (eso es descriptivos_predictores_crs04). No es el LASSO ni los perfiles. No es el diccionario de preguntas.",
-    tipo="Descriptivo",
+    "Cómo se ve la muestra (edad, área, cuidador, hogar, idioma) y cruces con las 3 Y. Vivienda CRS01 por departamento, sin pegar a la alumna.",
     script="scripts/descriptivos/descriptivos_controles.py",
 )}
-**Sí: CRS01 es el grupo de 18+.** Cuestionario CRS.01, mujeres de 18 y más en vivienda. CRS04 es adolescentes 12–17 en IE; aquí el recorte es mujeres (`SEXO = 1`).
+CRS.01 es mujeres de 18 y más en vivienda. CRS.04 es adolescentes 12–17 en IE; aquí el recorte es mujeres (`SEXO = 1`).
 
 Universo CRS04: mujeres (`SEXO = 1`) · n = {fmt_n(n_m)} · N = {fmt_n(n_exp)} con `FACTOR_ALUMNOS` · ENARES 2024.
 
@@ -787,7 +785,7 @@ Año de estudio (`C3ANIO`):
 
 {simple_dist(anio)}
 
-Departamentos con más N expandida (la cola es larga: group lasso o no meter 25 dummies sueltas):
+Departamentos con más N expandida. El nombre del departamento no entra a X:
 
 {t_depto}
 
